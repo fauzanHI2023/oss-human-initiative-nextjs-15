@@ -37,28 +37,28 @@ const Footer = () => {
         </div>
         <div className="flex flex-col gap-y-8 w-3/5">
           <ul className="flex flex-row gap-x-4">
-            <li className="text-slate-400 hover:text-white transition duration-200 ease-in text-base font-normal ">
+            <li className="text-slate-300 hover:text-white transition duration-200 ease-in text-base font-normal ">
               <Link href="/termandconditions">Term and Conditions</Link>
             </li>
-            <li className="text-slate-400 hover:text-white transition duration-200 ease-in text-base font-normal ">|</li>
-            <li className="text-slate-400 hover:text-white transition duration-200 ease-in text-base font-normal ">
+            <li className="text-slate-300 hover:text-white transition duration-200 ease-in text-base font-normal ">|</li>
+            <li className="text-slate-300 hover:text-white transition duration-200 ease-in text-base font-normal ">
               <Link href="/privacypolicy">Privacy Policy</Link>
             </li>
-            <li className="text-slate-400 hover:text-white transition duration-200 ease-in text-base font-normal ">|</li>
-            <li className="text-slate-400 hover:text-white transition duration-200 ease-in text-base font-normal ">
+            <li className="text-slate-300 hover:text-white transition duration-200 ease-in text-base font-normal ">|</li>
+            <li className="text-slate-300 hover:text-white transition duration-200 ease-in text-base font-normal ">
               <Link href="/faq">FAQ</Link>
             </li>
-            <li className="text-slate-400 hover:text-white transition duration-200 ease-in text-base font-normal ">|</li>
-            <li className="text-slate-400 hover:text-white transition duration-200 ease-in text-base font-normal ">
+            <li className="text-slate-300 hover:text-white transition duration-200 ease-in text-base font-normal ">|</li>
+            <li className="text-slate-300 hover:text-white transition duration-200 ease-in text-base font-normal ">
               <Link href="/whistleblowing">Whistleblowing HI</Link>
             </li>
           </ul>
           <ul className="flex flex-row gap-x-4">
-            <li className="text-slate-400 hover:text-white transition duration-200 ease-in text-base font-normal ">
+            <li className="text-slate-300 hover:text-white transition duration-200 ease-in text-base font-normal ">
               <Link href="/termandconditions">Contact</Link>
             </li>
-            <li className="text-slate-400 hover:text-white transition duration-200 ease-in text-base font-normal ">|</li>
-            <li className="text-slate-400 hover:text-white transition duration-200 ease-in text-base font-normal ">
+            <li className="text-slate-300 hover:text-white transition duration-200 ease-in text-base font-normal ">|</li>
+            <li className="text-slate-300 hover:text-white transition duration-200 ease-in text-base font-normal ">
               <Link href="/privacypolicy">Locations</Link>
             </li>
           </ul>

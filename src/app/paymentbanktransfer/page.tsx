@@ -3,12 +3,15 @@
 import React, { useEffect, useState, CSSProperties } from "react";
 import { useSearchParams } from "next/navigation";
 import { FaClock, FaRegCopy } from "react-icons/fa";
-import { FaCheckDouble } from "react-icons/fa6";
+import { FaClipboardCheck } from "react-icons/fa6";
 import PopupNotif from "@/components/ui/utility/PopupNotif";
 import Countdown from "react-countdown";
 import { fetchConfirmStatus } from "@/lib/donation/payment/auth-confirm-payment";
 import { MdConfirmationNumber } from "react-icons/md";
 import HashLoader from "react-spinners/HashLoader";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import Link from "next/link";
 
 const override: CSSProperties = {
   display: "block",
@@ -74,6 +77,8 @@ const PaymentBankTransfer: React.FC = () => {
       setLoading(false);
       setError("Transaction ID is missing");
     }
+
+    AOS.init();
   }, [transactionId]);
 
   const handleConfirmPayment = async () => {
@@ -101,15 +106,15 @@ const PaymentBankTransfer: React.FC = () => {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center p-24 dark:bg-slate-900 bg-gray-50">
         <HashLoader
-        color={color}
-        loading={loading}
-        cssOverride={override}
-        size={50}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />
+          color={color}
+          loading={loading}
+          cssOverride={override}
+          size={50}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
       </main>
-    )
+    );
   }
 
   if (error) {
@@ -157,16 +162,20 @@ const PaymentBankTransfer: React.FC = () => {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24 dark:bg-slate-900 bg-gray-50">
-      <div className="h-full h-96 w-4/5 py-4 px-6 mt-12">
+    <main className="flex min-h-screen flex-col items-center justify-center p-24 dark:bg-slate-900 bg-gradient-to-t from-blue-50 from-1% via-gray-50 via-30% to-gray-50 to-90%">
+      <div className="h-full h-96 w-1/2 py-4 pb-0 mt-12 shadow-xl rounded-sm">
         {transactionDetails && (
           <>
             {transactionDetails.status === "unpaid" && (
-              <div className="flex flex-col justify-center items-center gap-2 mb-6">
+              <div
+                data-aos="fade-down"
+                className="flex flex-col justify-center items-center gap-2 mb-6"
+              >
                 <span className="flex justify-center items-center bg-sky-100 w-36 h-36 rounded-full">
                   <FaClock
                     size={24}
-                    className="text-sky-400 text-5xl w-20 h-20 "
+                    className="text-sky-400 text-5xl w-20 h-20"
+                    data-aos="fade-down"
                   />
                 </span>
                 <h5 className="text-lg font-medium text-sky-600">
@@ -208,8 +217,12 @@ const PaymentBankTransfer: React.FC = () => {
                       {transactionDetails.payment_channel.name}
                     </span>
                     <div className="flex flex-row w-full justify-between text-xl text-slate-600 dark:text-slate-300 font-semibold">
-                      <span className="font-semibold">{transactionDetails.payment_channel.account_name}</span>
-                      <span>{transactionDetails.payment_channel.account_no}</span>
+                      <span className="font-semibold">
+                        {transactionDetails.payment_channel.account_name}
+                      </span>
+                      <span>
+                        {transactionDetails.payment_channel.account_no}
+                      </span>
                     </div>
                     <button
                       onClick={handleCopyAccountNo}
@@ -220,40 +233,44 @@ const PaymentBankTransfer: React.FC = () => {
                   </div>
                   <button
                     onClick={handleConfirmPayment}
-                      className="w-full flex flex-row justify-center gap-x-4 items-center mt-2 px-4 py-2 bg-sky-600 text-slate-700 rounded-md transition duration-300 ease-in hover:bg-slate-600 hover:text-white"
-                    >
+                    className="w-full flex flex-row justify-center gap-x-4 items-center mt-2 px-4 py-2 bg-sky-600 text-slate-700 rounded-md transition duration-300 ease-in hover:bg-slate-600 hover:text-white"
+                  >
                     Konfirmasi Pembayaran
                   </button>
                 </div>
               </div>
-              
             )}
             {transactionDetails.status === "paid" && (
-              <div className="flex flex-col justify-center items-center gap-2 mb-6">
-                <MdConfirmationNumber
-                  size={24}
-                  className="text-sky-500 text-2xl w-20 h-20"
-                />
-                <h5 className="text-lg font-medium text-sky-500">
-                  Waiting For Payment Confirmation
-                </h5>
-                <div className="flex flex-row justify-center items-center mb-3">
-                  <h1 className="text-xl font-bold dark:text-sky-600 text-sky-700">
-                    Thank you {transactionDetails.full_name}
-                  </h1>
-                </div>
-                <div className="flex flex-col gap-y-4 mb-6">
-                  <div className="flex flex-row w-full justify-center items-center">
-                    <span className="mr-2 font-base dark:text-white text-zinc-800">
-                      Your Transaction ID
-                    </span>
-                    <span>{transactionDetails.transaction_no}</span>
+              <div
+                data-aos="fade-down"
+                className="flex flex-col relative justify-center items-center gap-2"
+              >
+                <div className="flex flex-col relative justify-center items-center py-4">
+                  <MdConfirmationNumber
+                    size={24}
+                    className="text-sky-700 text-2xl w-20 h-20"
+                    data-aos="fade-down"
+                  />
+                  <h5 className="text-sm font-medium text-slate-400">
+                    Your transaction will be confirmed soon
+                  </h5>
+                  <div className="flex flex-row justify-center items-center mb-3">
+                    <h1 className="text-2xl font-bold dark:text-sky-600 text-sky-800">
+                      Thank you {transactionDetails.full_name}
+                    </h1>
                   </div>
-                </div>
-                <div className="flex flex-row w-full justify-center items-center">
-                    <span className="text-3xl text-sky-600 font-bold">
+                  <div className="flex flex-col gap-y-4 mb-6">
+                    <div className="flex flex-row w-full justify-center items-center text-slate-500 dark:text-white">
+                      <span className="mr-2 text-sm font-base dark:text-white">
+                        Your Transaction ID
+                      </span>
+                      <span>{transactionDetails.transaction_no}</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-row w-full justify-center items-center">
+                    <span className="text-3xl text-slate-800 font-bold">
                       {formatToRupiah(Number(transactionDetails.amount)).main}
-                      <span className="text-sky-600">
+                      <span className="text-slate-800">
                         {
                           formatToRupiah(Number(transactionDetails.amount))
                             .lastThree
@@ -261,34 +278,54 @@ const PaymentBankTransfer: React.FC = () => {
                       </span>
                     </span>
                   </div>
+                  <Link
+                    href="/"
+                    className="mt-8 mb-12 py-2 px-4 bg-slate-200 rounded-2xl text-slate-600 text-sm hover:bg-sky-500 hover:text-white transition duration-300 ease-in"
+                  >
+                    Go Home
+                  </Link>
+                </div>
+                <div className="fixed bottom-0 text-sm text-slate-700 flex flex-row justify-center py-2 px-4 gap-x-1 w-full bg-gradient-to-l from-sky-200 to-blue-300">
+                  <p>If you want to see your transaction history, please</p>
+                  <Link
+                    href="/login"
+                    className="text-slate-900 font-semibold hover:text-sky-900 hover:underline transition duration-300 ease-in"
+                  >
+                    login first
+                  </Link>
+                </div>
               </div>
             )}
             {transactionDetails.status === "confirmed" && (
-              <div className="flex flex-col justify-center items-center gap-2 mb-6">
-                <FaCheckDouble
-                  size={24}
-                  className="text-sky-500 text-2xl w-20 h-20"
-                />
-                <h5 className="text-lg font-medium text-sky-500">
-                  Payment Successful
-                </h5>
-                <div className="flex flex-row justify-center items-center mb-3">
-                  <h1 className="text-xl font-bold dark:text-sky-600 text-sky-700">
-                    Thank you {transactionDetails.full_name}
-                  </h1>
-                </div>
-                <div className="flex flex-col gap-y-4 mb-6">
-                  <div className="flex flex-row w-full justify-center items-center">
-                    <span className="mr-2 font-base dark:text-white text-zinc-800">
-                      Your Transaction ID
-                    </span>
-                    <span>{transactionDetails.transaction_no}</span>
+              <div
+                data-aos="fade-down"
+                className="flex flex-col justify-center items-center gap-2"
+              >
+                <div className="flex flex-col justify-center items-center">
+                  <FaClipboardCheck
+                    size={24}
+                    className="text-sky-500 text-2xl w-20 h-20 mb-6"
+                  />
+                  <h5 className="text-sm font-medium text-gray-400">
+                    Your Transaction is successful
+                  </h5>
+                  <div className="flex flex-row justify-center items-center mb-3">
+                    <h1 className="text-2xl font-bold dark:text-sky-600 text-sky-800">
+                      Thank you {transactionDetails.full_name}
+                    </h1>
                   </div>
-                </div>
-                <div className="flex flex-row w-full justify-center items-center">
-                    <span className="text-3xl text-sky-600 font-bold">
+                  <div className="flex flex-col gap-y-4 mb-6">
+                    <div className="flex flex-row w-full justify-center items-center text-slate-500 dark:text-white">
+                      <span className="mr-2 font-base dark:text-white">
+                        Your Transaction ID
+                      </span>
+                      <span>{transactionDetails.transaction_no}</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-row w-full justify-center items-center">
+                    <span className="text-3xl text-slate-800 font-bold">
                       {formatToRupiah(Number(transactionDetails.amount)).main}
-                      <span className="text-sky-600">
+                      <span className="text-slate-800">
                         {
                           formatToRupiah(Number(transactionDetails.amount))
                             .lastThree
@@ -296,6 +333,22 @@ const PaymentBankTransfer: React.FC = () => {
                       </span>
                     </span>
                   </div>
+                  <Link
+                    href="/"
+                    className="mt-6 mb-14 py-2 px-4 bg-slate-200 rounded-2xl text-slate-600 text-sm hover:bg-sky-500 hover:text-white transition duration-300 ease-in"
+                  >
+                    Go Home
+                  </Link>
+                </div>
+                <div className="fixed bottom-0 text-sm text-slate-700 flex flex-row justify-center py-2 px-4 gap-x-1 w-full bg-gradient-to-l from-sky-200 to-blue-300">
+                  <p>If you want to see your transaction history, please</p>
+                  <Link
+                    href="/login"
+                    className="text-slate-900 font-semibold hover:text-sky-900 hover:underline transition duration-300 ease-in"
+                  >
+                    login first
+                  </Link>
+                </div>
               </div>
             )}
           </>

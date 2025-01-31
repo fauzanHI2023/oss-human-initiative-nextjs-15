@@ -14,7 +14,7 @@ import { FaCartPlus, FaOpencart } from "react-icons/fa";
 import Cookies from "js-cookie";
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
-import Image from 'next/image'
+import Image from 'next/image';
 
 interface User {
   id: number;
@@ -31,6 +31,8 @@ interface CartItem {
   image?: string;
   amount: number;
   quantity: number;
+  cookies_id: any;
+  slug: any;
 }
 
 interface PaymentChannel {
@@ -110,6 +112,7 @@ const Checkout: React.FC = () => {
           if (campaignData) {
             item.name = campaignData.campaign_name;
             item.image = campaignData.campaign_img;
+            item.slug = campaignData.slug;
           } else {
             console.warn(
               `Campaign data mismatch or missing for item. Item campaign_id: ${item.campaign_id}, API id: undefined`
@@ -286,30 +289,32 @@ const Checkout: React.FC = () => {
             cartItems.map((item) => (
               <div
                 key={item.campaign_id}
-                className="flex flex-wrap justify-between items-center w-full border-b border-slate-200 dark:border-slate-700 py-6"
+                className="flex flex-wrap justify-between items-center w-full py-6"
               >
-                <Image
-                  src={`https://cdnx.human-initiative.org/image/${item.image}`}
-                  alt={item.name || "Campaign Image"}
-                  width={100}
-                  height={100}
-                  className="rounded-md object-cover"
-                />
-                <h5 className="flex items-start w-2/5 text-base font-normal dark:text-white text-slate-800 overflow-hidden h-[40px]">
-                  {item.name}
-                </h5>
-                <p className="flex items-start text-sky-500 h-[40px]">
-                  {formatPrice(item.amount)}
-                </p>
-                <div className="flex gap-x-4 w-full items-center justify-end">
-                  <button
-                    className="text-red-500 hover:text-red-700 flex items-center gap-x-2"
-                    onClick={() => handleDeleteItem(item.campaign_id)}
-                  >
-                    <RiDeleteBin6Line size={18} />
-                    Delete
-                  </button>
-                </div>
+                <Link href={`/campaign/${item.slug}`} className="flex flex-wrap justify-between items-center w-full border-b border-slate-200 dark:border-slate-700 py-6">
+                  <Image
+                    src={`https://cdnx.human-initiative.org/image/${item.image}`}
+                    alt={item.name || "Campaign Image"}
+                    width={100}
+                    height={100}
+                    className="rounded-md object-cover"
+                  />
+                  <h5 className="flex items-start w-2/5 text-base font-normal dark:text-white text-slate-800 overflow-hidden h-[40px]">
+                    {item.name}
+                  </h5>
+                  <p className="flex items-start text-sky-500 h-[40px]">
+                    {formatPrice(item.amount)}
+                  </p>
+                  <div className="flex gap-x-4 w-full items-center justify-end">
+                    <button
+                      className="text-red-500 hover:text-red-700 flex items-center gap-x-2"
+                      onClick={() => handleDeleteItem(item.campaign_id)}
+                    >
+                      <RiDeleteBin6Line size={18} />
+                      Delete
+                    </button>
+                  </div>
+                </Link>
               </div>
             ))
           ) : (

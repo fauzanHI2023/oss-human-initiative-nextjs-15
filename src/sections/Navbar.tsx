@@ -77,6 +77,7 @@ const Navbar = (props: Props) => {
             ...item,
             campaign_name: campaignData?.campaign_name || "Unknown Campaign",
             campaign_img: campaignData?.campaign_img || "/default-image.jpg",
+            slug: campaignData?.slug || "not-found",
           };
         });
 
@@ -281,23 +282,25 @@ const Navbar = (props: Props) => {
                           key={item.campaign_id}
                           className="flex flex-row w-full mb-2 justify-between items-center"
                         >
-                          <div className="flex items-center gap-4">
-                            <Image
-                              src={`https://cdnx.human-initiative.org/image/${item.campaign_img}`}
-                              alt={item.campaign_name || "Campaign Image"}
-                              width={100}
-                              height={100}
-                              className="w-12 h-12 rounded-md object-cover"
-                            />
-                            <div>
-                              <h4 className="text-sm font-medium">
-                                {item.campaign_name}
-                              </h4>
-                              <p className="text-xs text-slate-700 dark:text-slate-300 ">
-                              {formatPrice(item.amount)}
-                              </p>
+                          <Link href={`/campaign/${item.slug}`}>
+                            <div className="flex items-center gap-4">
+                              <Image
+                                src={`https://cdnx.human-initiative.org/image/${item.campaign_img}`}
+                                alt={item.campaign_name || "Campaign Image"}
+                                width={100}
+                                height={100}
+                                className="w-12 h-12 rounded-md object-cover"
+                              />
+                              <div>
+                                <h4 className="text-sm font-medium">
+                                  {item.campaign_name}
+                                </h4>
+                                <p className="text-xs text-slate-700 dark:text-slate-300 ">
+                                {formatPrice(item.amount)}
+                                </p>
+                              </div>
                             </div>
-                          </div>
+                          </Link>
                         </li>
                       ))
                     ) : (
