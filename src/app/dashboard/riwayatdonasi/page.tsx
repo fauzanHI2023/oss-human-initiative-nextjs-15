@@ -1,19 +1,30 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import DashboardLayout from '@/components/ui/dashboard/DashboardLayout';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs-fe';
-import { BookCheck, ListChecks, BookmarkX } from 'lucide-react';
-import { GetPendingTransaction, GetSuccessTransaction, GetCancelTransaction } from '@/lib/auth-csr';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
+import React, { useEffect, useState } from "react";
+import DashboardLayout from "@/components/ui/dashboard/DashboardLayout";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs-fe";
+import { BookCheck, ListChecks, BookmarkX } from "lucide-react";
+import {
+  GetPendingTransaction,
+  GetSuccessTransaction,
+  GetCancelTransaction,
+} from "@/lib/auth-csr";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 interface Transaction {
   product_img: string;
   name: string;
   category_program: string;
+  status_id: string;
   status: string;
   transaction_time: string;
-  gross_amount: string;
+  transaction_number: string;
+  total_amount: string;
 }
 
 const RiwayatDonasi: React.FC = () => {
@@ -27,46 +38,55 @@ const RiwayatDonasi: React.FC = () => {
   } = session?.data?.user || {};
   const phpDonorId = user?.phpDonorData?.[0]?.id;
 
-  const [pendingTransactions, setPendingTransactions] = useState<Transaction[]>([]);
-  const [successTransactions, setSuccessTransactions] = useState<Transaction[]>([]);
-  const [cancelTransactions, setCancelTransactions] = useState<Transaction[]>([]);
+  const [pendingTransactions, setPendingTransactions] = useState<Transaction[]>(
+    []
+  );
+  const [successTransactions, setSuccessTransactions] = useState<Transaction[]>(
+    []
+  );
+  const [cancelTransactions, setCancelTransactions] = useState<Transaction[]>(
+    []
+  );
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchImageUrl = async (key: string): Promise<string> => {
-      const response = await fetch(`/api/getImage?key=${key}`);
-      const data = await response.json();
-      return data.url;
-    };
-
-    const fetchTransactionsWithImages = async (fetchFunction: () => Promise<{ success: boolean, transactions: Transaction[] }>, setFunction: React.Dispatch<React.SetStateAction<Transaction[]>>) => {
+    const fetchTransactions = async (
+      fetchFunction: () => Promise<{
+        success: boolean;
+        transactions: Transaction[];
+      }>,
+      setFunction: React.Dispatch<React.SetStateAction<Transaction[]>>
+    ) => {
       try {
         const response = await fetchFunction();
-        console.log('API response:', response); // Debugging line
+        console.log("API response:", response); // Debugging line
         if (response && response.transactions) {
-          const transactionsWithImages = await Promise.all(
-            response.transactions.map(async (transaction: Transaction) => {
-              if (transaction.product_img) {
-                transaction.product_img = await fetchImageUrl(transaction.product_img);
-              }
-              return transaction;
-            })
-          );
-          setFunction(transactionsWithImages);
+          setFunction(response.transactions); // Langsung set transactions tanpa fetch image
         } else {
-          console.error('Error fetching transactions: invalid response structure');
+          console.error(
+            "Error fetching transactions: invalid response structure"
+          );
         }
       } catch (error) {
-        console.error('Error fetching transactions:', error);
+        console.error("Error fetching transactions:", error);
       } finally {
         setLoading(false);
       }
     };
 
     if (phpDonorId) {
-      fetchTransactionsWithImages(() => GetPendingTransaction(phpDonorId), setPendingTransactions);
-      fetchTransactionsWithImages(() => GetSuccessTransaction(phpDonorId), setSuccessTransactions);
-      fetchTransactionsWithImages(() => GetCancelTransaction(phpDonorId), setCancelTransactions);
+      fetchTransactions(
+        () => GetPendingTransaction(phpDonorId),
+        setPendingTransactions
+      );
+      fetchTransactions(
+        () => GetSuccessTransaction(phpDonorId),
+        setSuccessTransactions
+      );
+      fetchTransactions(
+        () => GetCancelTransaction(phpDonorId),
+        setCancelTransactions
+      );
     }
   }, [phpDonorId]);
 
@@ -74,39 +94,58 @@ const RiwayatDonasi: React.FC = () => {
     <DashboardLayout>
       <main className="flex min-h-screen flex-col px-16 py-12">
         <div className="box p-6 flex flex-col gap-y-5 border shadow-xl rounded-xl dark:bg-slate-900 bg-white">
-          <h5 className="text-xl font-bold">Riwayat Donasi</h5>
+          <h5 className="text-xl font-bold">History Donasi</h5>
           {loading ? (
             <p>Loading...</p>
           ) : (
-            <Tabs defaultValue="pending" className="w-full">
+            <Tabs defaultValue="6" className="w-full">
               <TabsList className="w-full flex flex-row">
-                <TabsTrigger value="pending" className="w-1/3">
-                  <BookCheck className="mr-2 h-4 w-4" /> Belum Bayar
+                <TabsTrigger value="6" className="w-1/3">
+                  <BookCheck className="mr-2 h-4 w-4" /> Pending
                 </TabsTrigger>
-                <TabsTrigger value="paid" className="w-1/3">
-                  <ListChecks className="mr-2 h-4 w-4" /> Selesai
+                <TabsTrigger value="8" className="w-1/3">
+                  <ListChecks className="mr-2 h-4 w-4" /> Confirmed
                 </TabsTrigger>
-                <TabsTrigger value="cancel" className="w-1/3">
-                  <BookmarkX className="mr-2 h-4 w-4" /> Dibatalkan
+                <TabsTrigger value="9" className="w-1/3">
+                  <BookmarkX className="mr-2 h-4 w-4" /> Cancel
                 </TabsTrigger>
               </TabsList>
-              <TabsContent value="pending" className="mt-3">
+              <TabsContent value="6" className="mt-3">
                 {pendingTransactions.length > 0 ? (
                   <div className="flex flex-col gap-y-10 mt-6">
                     {pendingTransactions.map((transaction, index) => (
-                      <div key={index} className="flex flex-row w-[90%] gap-x-8 transaction-item">
-                        <div className="flex w-1/4">
-                          <Image src={transaction.product_img || '/../../public/bg-register.jpg'} alt={transaction.name} width={200} height={200} className="object-cover w-[200px] h-[200px] rounded-xl" />
+                      <div
+                        key={index}
+                        className="flex flex-row w-full gap-x-8 transaction-item"
+                      >
+                        <div className="flex w-1/12">
+                          <Image
+                            src={`https://cdnx.human-initiative.org/image/${transaction.product_img}`}
+                            alt={transaction.name}
+                            width={80}
+                            height={80}
+                            className="object-cover w-[80px] h-[80px] rounded-xl"
+                          />
                         </div>
-                        <div className="flex flex-col justify-center w-3/4 gap-y-12">
+                        <div className="flex flex-col justify-center w-11/12 gap-y-4">
                           <div className="flex flex-row justify-between items-center">
-                            <p className="w-3/5 font-semibold text-lg text-gray-700 dark:text-white overflow-hidden h-[60px]">{transaction.name}</p>
-                            <p className="w-[150px] px-4 py-2 rounded-3xl text-center border border-blue-500 bg-blue-50 dark:bg-slate-800 text-blue-500">{transaction.status}</p>
+                            <p className="w-3/5 font-semibold text-base text-gray-700 dark:text-white overflow-hidden h-auto">
+                              {transaction.name}
+                            </p>
+                            <p className="text-sm px-4 py-2 text-sm rounded-3xl text-center border border-blue-500 bg-blue-50 dark:bg-slate-800 text-blue-500">
+                              Pending
+                            </p>
                           </div>
-                          <div className="flex flex-row justify-between items-center w-3/5">
-                            <p className="text-blue-500 capitalize">{transaction.category_program || 'sekali'}</p>
-                            <p className="text-stone-400">{transaction.transaction_time}</p>
-                            <p className="text-stone-600">{transaction.gross_amount}</p>
+                          <div className="flex flex-row justify-between items-center w-full">
+                            <p className="text-blue-500 capitalize">
+                              {transaction.transaction_number}
+                            </p>
+                            <p className="text-stone-400">
+                              {transaction.transaction_time}
+                            </p>
+                            <p className="text-stone-600">
+                              {transaction.total_amount}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -116,23 +155,42 @@ const RiwayatDonasi: React.FC = () => {
                   <p>No pending transactions</p>
                 )}
               </TabsContent>
-              <TabsContent value="paid" className="mt-3">
+              <TabsContent value="8" className="mt-3">
                 {successTransactions.length > 0 ? (
                   <div className="flex flex-col gap-y-10 mt-6">
                     {successTransactions.map((transaction, index) => (
-                      <div key={index} className="flex flex-row w-[90%] gap-x-8 transaction-item">
-                        <div className="flex w-1/4">
-                          <Image src={transaction.product_img || '/../../public/bg-register.jpg'} alt={transaction.name} width={200} height={200} className="object-cover w-[200px] h-[200px] rounded-xl" />
+                      <div
+                        key={index}
+                        className="flex flex-row w-full gap-x-8 transaction-item"
+                      >
+                        <div className="flex w-1/12">
+                          <Image
+                            src={`https://cdnx.human-initiative.org/image/${transaction.product_img}`}
+                            alt={transaction.name}
+                            width={80}
+                            height={80}
+                            className="object-cover w-[80px] h-[80px] rounded-xl"
+                          />
                         </div>
-                        <div className="flex flex-col justify-center w-3/4 gap-y-12">
+                        <div className="flex flex-col justify-center w-11/12 gap-y-4">
                           <div className="flex flex-row justify-between items-center">
-                            <p className="w-3/5 font-semibold text-lg text-gray-700 dark:text-white overflow-hidden h-[60px]">{transaction.name}</p>
-                            <p className="w-1/5 px-4 py-2 rounded-3xl text-center bg-blue-500 text-white">{transaction.status}</p>
+                            <p className="w-3/5 font-semibold text-base text-gray-700 dark:text-white overflow-hidden h-auto">
+                              {transaction.name}
+                            </p>
+                            <p className="px-4 py-2 rounded-3xl text-sm text-center bg-blue-500 text-white">
+                              Success
+                            </p>
                           </div>
-                          <div className="flex flex-row justify-between items-center w-3/5">
-                            <p className="text-blue-500 capitalize">{transaction.category_program || 'sekali'}</p>
-                            <p className="text-stone-400">{transaction.transaction_time}</p>
-                            <p className="text-stone-600">{transaction.gross_amount}</p>
+                          <div className="flex flex-row justify-between items-center w-full">
+                            <p className="text-blue-500 capitalize">
+                              {transaction.transaction_number}
+                            </p>
+                            <p className="text-stone-400">
+                              {transaction.transaction_time}
+                            </p>
+                            <p className="text-stone-600">
+                              {transaction.total_amount}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -142,23 +200,42 @@ const RiwayatDonasi: React.FC = () => {
                   <p>No successful transactions</p>
                 )}
               </TabsContent>
-              <TabsContent value="cancel">
+              <TabsContent value="9">
                 {cancelTransactions.length > 0 ? (
                   <div className="flex flex-col gap-y-10 mt-6">
                     {cancelTransactions.map((transaction, index) => (
-                      <div key={index} className="flex flex-row w-[90%] gap-x-8 transaction-item">
-                        <div className="flex w-1/4">
-                          <Image src={transaction.product_img || '/../../public/bg-register.jpg'} alt={transaction.name} width={200} height={200} className="object-cover w-[200px] h-[200px] rounded-xl" />
+                      <div
+                        key={index}
+                        className="flex flex-row w-full gap-x-8 transaction-item"
+                      >
+                        <div className="flex w-1/12">
+                          <Image
+                            src={`https://cdnx.human-initiative.org/image/${transaction.product_img}`}
+                            alt={transaction.name}
+                            width={80}
+                            height={80}
+                            className="object-cover w-[80px] h-[80px] rounded-xl"
+                          />
                         </div>
-                        <div className="flex flex-col justify-center w-3/4 gap-y-12">
+                        <div className="flex flex-col justify-center w-11/12 gap-y-4">
                           <div className="flex flex-row justify-between items-center">
-                            <p className="w-3/5 font-semibold text-lg text-gray-700 dark:text-white overflow-hidden h-[60px]">{transaction.name}</p>
-                            <p className="w-1/5 px-4 py-2 rounded-3xl text-center border border-stone-600 bg-stone-100 text-stone-600">{transaction.status}</p>
+                            <p className="w-3/5 font-semibold text-base text-gray-700 dark:text-white overflow-hidden">
+                              {transaction.name}
+                            </p>
+                            <p className="px-4 py-2 text-sm rounded-3xl text-center border border-stone-600 bg-stone-100 text-stone-600">
+                              Cancel
+                            </p>
                           </div>
-                          <div className="flex flex-row justify-between items-center w-3/5">
-                            <p className="text-blue-500 capitalize">{transaction.category_program || 'sekali'}</p>
-                            <p className="text-stone-400">{transaction.transaction_time}</p>
-                            <p className="text-stone-600">{transaction.gross_amount}</p>
+                          <div className="flex flex-row justify-between items-center w-full">
+                            <p className="text-blue-500 capitalize">
+                              {transaction.transaction_number}
+                            </p>
+                            <p className="text-stone-400">
+                              {transaction.transaction_time}
+                            </p>
+                            <p className="text-stone-600">
+                              {transaction.total_amount}
+                            </p>
                           </div>
                         </div>
                       </div>

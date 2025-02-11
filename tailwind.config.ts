@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
   	extend: {
+		screens: {
+			"sm-mobile": "640px",
+		},
 		fontFamily: {
 			poppins: ["Poppins"],
 			raleway: ["Raleway"],

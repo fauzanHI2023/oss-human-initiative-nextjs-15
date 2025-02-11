@@ -153,11 +153,11 @@ const PublicReport = () => {
               <>
                 <div
                   onClick={() => setShowYearDropdown(false)}
-                  className="fixed inset-0 bg-black bg-opacity-50 z-10 top-0 left-0 transition-opacity duration-200 ease-in w-full h-full"
+                  className="fixed inset-0 bg-black bg-opacity-75 z-10 top-0 left-0 transition-opacity duration-200 ease-in w-full h-full"
                 />
 
-                <div className="absolute top-full mt-8 right-0 bg-white border rounded-lg shadow-lg w-96 z-20">
-                  <h5 className="text-center py-4 bg-white text-sky-900 font-medium border border-b-4 border-b-sky-500">
+                <div className="absolute top-full mt-8 right-0 bg-white dark:bg-slate-800 border rounded-lg shadow-lg w-96 z-20">
+                  <h5 className="text-center py-4 bg-white dark:bg-slate-700 text-sky-900 dark:text-sky-500 font-medium border border-b-4 border-b-sky-500">
                     Select Year
                   </h5>
                   <ul className="flex flex-col h-32 overflow-hidden overflow-y-scroll">
@@ -167,7 +167,7 @@ const PublicReport = () => {
                         setShowYearDropdown(false);
                         setCurrentPage(1);
                       }}
-                      className="px-4 py-2 text-sky-900 hover:bg-gray-100 cursor-pointer"
+                      className="px-4 py-2 text-sky-900 dark:text-sky-700 hover:bg-gray-100 dark:hover:bg-slate-700 cursor-pointer"
                     >
                       All
                     </li>
@@ -179,7 +179,7 @@ const PublicReport = () => {
                           setShowYearDropdown(false);
                           setCurrentPage(1);
                         }}
-                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                        className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-slate-700 cursor-pointer"
                       >
                         {year}
                       </li>
@@ -201,7 +201,7 @@ const PublicReport = () => {
                 paginate(filterReports()).map((report) => (
                   <div
                     key={report.id}
-                    className="publikasi-card mb-4 border-b pb-4 w-full flex flex-row gap-x-3 justify-between bg-gray-50 transition duration-500 ease-in hover:bg-gray-100"
+                    className="publikasi-card mb-4 border-b pb-4 w-full flex flex-row gap-x-3 justify-between bg-gray-50 dark:bg-slate-900 transition duration-500 ease-in hover:bg-gray-100"
                   >
                     <div className="flex flex-col justify-between items-start w-3/5 px-6 py-4">
                       <h2 className="text-sky-500 text-xl font-normal">

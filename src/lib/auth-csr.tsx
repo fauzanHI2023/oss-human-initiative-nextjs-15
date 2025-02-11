@@ -19,12 +19,12 @@ export async function GetPendingTransaction(userId: string) {
             const product = item.product;
 
             return {
-                product_img: product.product_img,
-                name: product.name,
-                category_program: product.category_program,
-                status: transaction.status === 'pending' ? 'Belum Bayar' : 'Berhasil',
-                transaction_time: format(new Date(transaction.transaction_time), 'dd MMMM yyyy', { locale: localeId }),
-                gross_amount: new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(transaction.gross_amount)
+                product_img: product.campaign_img,
+                name: product.campaign_name,
+                status: transaction.status_id === '6' ? 'Belum Bayar' : 'Berhasil',
+                transaction_time: format(new Date(transaction.transaction_date), 'dd MMMM yyyy', { locale: localeId }),
+                transaction_number: transaction.transaction_no,
+                total_amount: new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(transaction.total_amount)
             };
         });
 
@@ -50,13 +50,24 @@ export async function GetSuccessTransaction(userId: string) {
             const item = transactionData.items[0]; // first item
             const product = item.product;
 
+            let statusText = '';
+            if (transaction.status_id === '6') {
+                statusText = 'Belum Bayar';
+            } else if (transaction.status_id === '8') {
+                statusText = 'Berhasil';
+            } else if (transaction.status_id === '9' || transaction.status === '10') {
+                statusText = 'Dibatalkan';
+            } else {
+                statusText = transaction.status;
+            }
+
             return {
-                product_img: product.product_img,
-                name: product.name,
-                category_program: product.category_program,
-                status: transaction.status === 'pending' ? 'Belum Bayar' : 'Berhasil',
-                transaction_time: format(new Date(transaction.transaction_time), 'dd MMMM yyyy', { locale: localeId }),
-                gross_amount: new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(transaction.gross_amount)
+                product_img: product.campaign_img,
+                name: product.campaign_name,
+                status: transaction.status_id === '6' ? 'Belum Bayar' : 'Berhasil',
+                transaction_time: format(new Date(transaction.transaction_date), 'dd MMMM yyyy', { locale: localeId }),
+                transaction_number: transaction.transaction_no,
+                total_amount: new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(transaction.total_amount)
             };
         });
 
@@ -83,23 +94,23 @@ export async function GetCancelTransaction(userId: string) {
             const product = item.product;
 
             let statusText = '';
-            if (transaction.status === 'pending') {
+            if (transaction.status_id === '6') {
                 statusText = 'Belum Bayar';
-            } else if (transaction.status === 'settlement') {
+            } else if (transaction.status_id === '8') {
                 statusText = 'Berhasil';
-            } else if (transaction.status === 'cancel' || transaction.status === 'expire') {
+            } else if (transaction.status_id === '9' || transaction.status === '10') {
                 statusText = 'Dibatalkan';
             } else {
                 statusText = transaction.status;
             }
 
             return {
-                product_img: product.product_img,
-                name: product.name,
-                category_program: product.category_program,
-                status: statusText,
-                transaction_time: format(new Date(transaction.transaction_time), 'dd MMMM yyyy', { locale: localeId }),
-                gross_amount: new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(transaction.gross_amount)
+                product_img: product.campaign_img,
+                name: product.campaign_name,
+                status: transaction.status_id === '6' ? 'Belum Bayar' : 'Berhasil',
+                transaction_number: transaction.transaction_no,
+                transaction_time: format(new Date(transaction.transaction_date), 'dd MMMM yyyy', { locale: localeId }),
+                total_amount: new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(transaction.total_amount)
             };
         });
 

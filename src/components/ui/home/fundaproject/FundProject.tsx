@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress_fe";
 import { fetchCampaign } from "@/lib/donation/campaign/auth-campaign";
 import { Heart } from "lucide-react";
 import Link from "next/link"
+import AnimationCardPulse from "../../animation-card-pulse";
 
 const FundProject = () => {
   const [projects, setProjects] = useState([]);
@@ -39,8 +40,8 @@ const FundProject = () => {
 
   if (isLoading) {
     return (
-      <div className="p-24 text-center">
-        <p>Loading campaigns...</p>
+      <div className="grid grid-cols-4">
+        <AnimationCardPulse/>
       </div>
     );
   }

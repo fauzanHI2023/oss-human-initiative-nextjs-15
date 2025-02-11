@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
-import { ChevronRight, ChevronLeft, ArrowDownToLine } from 'lucide-react';
+import { ChevronRight, ChevronLeft, ArrowDownToLine } from "lucide-react";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/4.8.69/pdf.min.mjs`;
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/4.8.69/pdf.worker.mjs`;
 
 interface PdfModalViewerProps {
   fileUrl: string;
@@ -19,7 +19,7 @@ const PdfModalViewer: React.FC<PdfModalViewerProps> = ({ fileUrl }) => {
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
-    setPageNumber(1);
+    setPageNumber(1); // Reset to first page when a new document is loaded
   };
 
   const openModal = () => setIsOpen(true);
@@ -46,30 +46,35 @@ const PdfModalViewer: React.FC<PdfModalViewerProps> = ({ fileUrl }) => {
       {/* Modal Overlay */}
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-[100]">
-          <div className="relative bg-white w-full h-full">
+          <div className="relative bg-white w-11/12 h-full">
             {/* Header */}
-            <div className="flex justify-between items-center bg-gray-100 p-4">
-              <h2 className="text-xl font-semibold">Designed Falf</h2>
+            <div className="flex justify-between items-center bg-gray-100 dark:bg-slate-800 p-4">
+              <h2 className="text-xl font-semibold">Falvo Viewer</h2>
               <button
                 onClick={closeModal}
-                className="text-gray-700 hover:text-gray-900 text-lg"
+                className="text-gray-700 hover:text-gray-900 dark:text-slate-400 dark:hover:text-slate-200 transition duration-200 ease-in text-lg"
               >
                 ✕
               </button>
             </div>
 
             {/* PDF Viewer */}
-            <div className="flex flex-col items-center justify-center w-full h-full overflow-hidden overflow-scroll">
-              <Document file={fileUrl} onLoadSuccess={onDocumentLoadSuccess}>
+            <div className="w-full h-full overflow-hidden overflow-scroll">
+              <Document
+                file={fileUrl}
+                onLoadSuccess={onDocumentLoadSuccess}
+                loading={<p>Loading PDF...</p>}
+                error={<p>Failed to load the document.</p>}
+              >
                 <Page pageNumber={pageNumber} />
               </Document>
-              <p className="fixed bottom-0 left-0 mt-4 px-6 py-4">
-                Page {pageNumber} of {numPages}
+              <p className="mt-2">
+                Page {pageNumber} of {numPages ?? "?"}
               </p>
             </div>
 
             {/* Footer Controls */}
-            <div className="fixed bottom-0 right-0 flex justify-between items-center bg-gray-100 p-4">
+            <div className="fixed bottom-0 right-[4rem] flex justify-between items-center bg-gray-100 p-4">
               <button
                 onClick={prevPage}
                 disabled={pageNumber === 1}
@@ -91,7 +96,7 @@ const PdfModalViewer: React.FC<PdfModalViewerProps> = ({ fileUrl }) => {
                   link.download = "report.pdf";
                   link.click();
                 }}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                className="bg-slate-600 hover:bg-sky-600 transition duration-400 ease-in text-white px-4 py-2 rounded"
               >
                 <ArrowDownToLine />
               </button>

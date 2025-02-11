@@ -9,7 +9,8 @@ type CartItem = {
   quantity: number;
   name: string;
   amount: number;
-  image?: string; // Gambar produk (opsional)
+  image?: string;
+  slug?: string; // Gambar produk (opsional)
 };
 
 // Tipe untuk CartContext

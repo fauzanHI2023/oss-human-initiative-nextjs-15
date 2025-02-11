@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, CSSProperties } from "react";
 import Banner from "@/components/ui/banner/Banner";
 import { MoveRight } from "lucide-react";
 import { rightHolders } from "@/data/data";
@@ -9,11 +9,33 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import { fetchRightholders } from "@/lib/cphp/auth-list-rightholders";
+import { useQuery } from "@tanstack/react-query";
+import Iframe from "react-iframe";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
+import { CalendarDays } from "lucide-react";
+import HashLoader from "react-spinners/HashLoader";
 
-const wordFlips = `Jadilah Bagian Dari Perubahan Bersama Kami`;
+const wordFlips = `Be Part of the Change with Us`;
+
+const override: CSSProperties = {
+  display: "block",
+  margin: "0 auto",
+  borderColor: "red",
+};
+
+interface Rightholder {
+  id: string;
+  form_name: string;
+  form_description: string;
+  link: string;
+  end_datetime: string;
+}
 
 const Rightholders = () => {
   const [step, setStep] = useState(1);
+  const [showIframe, setShowIframe] = useState(false);
+  let [color, setColor] = useState("#209ce2");
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -26,6 +48,32 @@ const Rightholders = () => {
   useEffect(() => {
     AOS.init();
   });
+
+  const {
+    data: rightholders = [],
+    isLoading,
+    error,
+  } = useQuery<Rightholder[]>({
+    queryKey: ["rightholders"],
+    queryFn: fetchRightholders,
+  });
+
+  if (isLoading) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center p-24 dark:bg-slate-900 bg-gray-50">
+        <HashLoader
+          color={color}
+          loading={isLoading}
+          cssOverride={override}
+          size={50}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </main>
+    );
+  };
+  if (error) return <p>Error loading data</p>;
+
   return (
     <main className="">
       <section className="flex flex-row w-full h-[1000px] sm:p-24 p-6 sm:pt-40 pt-24 dark:bg-slate-950 bg-white sm:bg-cover bg-cover bg-center bg-no-repeat">
@@ -36,15 +84,14 @@ const Rightholders = () => {
           >
             <div className="flex flex-col items-center gap-y-6">
               <h3 className="w-1/2">
-                <TextGenerateEffect words={wordFlips} className="text-center"/>
+                <TextGenerateEffect words={wordFlips} className="text-center" />
               </h3>
               <h6
                 className="w-1/2 font-light text-base text-center"
                 data-aos="fade-left"
               >
-                Daftarkan diri Anda sebagai Calon Pemegang Hak Program untuk
-                mendapatkan bantuan kemanusiaan dan menciptakan perubahan
-                positif bersama kami.
+                Register yourself as a Program Entitlement Candidate to get
+                humanitarian assistance and create positive change with us.
               </h6>
             </div>
           </div>
@@ -194,18 +241,18 @@ const Rightholders = () => {
           >
             <div className="flex flex-col items-center gap-y-6">
               <h3 className="font-medium sm:text-[60px] text-2xl leading-[50px] text-center dark:text-white text-[#002C4A]">
-                Apa itu CPHP?
+                What is CPHP?
               </h3>
             </div>
             <h6
               className="font-sm text-base w-3/4  text-center"
               data-aos="fade-left"
             >
-              Calon Pemegang Hak Program (CPHP) adalah Individu atau Komunitas
-              yang memenuhi kriteria tertentu untuk menjadi penerima program
-              bantuan kemanusiaan yang dijalankan oleh Human Initiative. Adapun
-              program yang dapat diakses oleh masyarakat terdiri atas bidang
-              pendidikan, kesehatan, ekonomi dan sosial kemanusiaan.
+              Prospective Program Right Holders (CPHP) are Individuals or
+              Communities who meet certain criteria to become recipients of the
+              humanitarian assistance programs run by the Human Initiative. The
+              programs that can be accessed by the community consist of the
+              fields of education, health, economy and social humanity.
             </h6>
           </div>
         </div>
@@ -223,16 +270,16 @@ const Rightholders = () => {
           <div className="w-1/2 flex flex-col gap-y-8">
             <h6 className="text-base font-normal text-sky-500">CPHP</h6>
             <h3 className="font-medium sm:text-[50px] text-2xl leading-[50px] dark:text-white text-[#002C4A]">
-              Kami Membantu Yang Membutuhkan Siapa
+              We Help Those Who Need It
             </h3>
             <h4 className="font-normal text-sm">
-              Daftarkan diri anda untuk menjadi calon pemegang hak program
+              Register yourself to become a prospective program right holder
             </h4>
           </div>
         </div>
       </section>
       <section
-        className={`relative flex flex-col w-full sm:px-32 sm:py-20 p-6 dark:bg-slate-900 bg-sky-50`}
+        className={`relative flex flex-col w-full sm:px-32 sm:py-20 p-6 dark:bg-slate-900 bg-gray-50`}
       >
         <div className="flex sm:flex-row flex-col sm:pb-20 pb-12">
           <h5
@@ -254,35 +301,66 @@ const Rightholders = () => {
           </p>
         </div>
         <div className={`grid sm:grid-cols-4 grid-cols-1 sm:gap-x-6`}>
-          {rightHolders.map((donate, index) => (
+          {rightholders.map((donate, index) => (
             <div
               key={index}
-              className={`bg-white dark:bg-slate-950 sm:pb-0 pb-6`}
+              className={`bg-white dark:bg-slate-800 rounded-xl border p-6 sm:pb-0 pb-6`}
               data-aos="fade-up"
               data-aos-easing="linear"
               data-aos-duration="1500"
             >
-              <div className={`flex flex-col gap-y-4 py-4 px-6 rounded-xl`}>
+              <GlowingEffect
+                spread={40}
+                glow={true}
+                disabled={false}
+                proximity={64}
+                inactiveZone={0.01}
+              />
+              <div
+                className={`flex flex-col gap-y-4 py-4 px-6 pt-8 rounded-xl relative`}
+              >
+                <div className="fixed top-0 right-0 bg-sky-700 dark:bg-sky-600 text-white py-2 px-3 rounded-tr-xl rounded-tl-xl w-full flex flex-row justify-center items-center gap-x-3">
+                  <CalendarDays />
+                  <span className="text-sm">{donate.end_datetime}</span>
+                </div>
                 <h3
                   className={`sm:text-base text-base text-center font-semibold sm:pb-6 pb-3 h-[80px] overflow-hidden`}
                 >
-                  {donate.name}
+                  {donate.form_name}
                 </h3>
                 <h3
                   className={`sm:text-sm text-sm text-center text-slate-400 dark:text-slate-300 font-normal sm:pb-6 pb-3 h-[60px] overflow-hidden`}
                 >
-                  {donate.description}
+                  {donate.form_description}
                 </h3>
-                <Link
-                  href={donate.url}
+                <button
+                  onClick={() => setShowIframe(true)}
                   className={`flex flex-row gap-x-2 justify-center items-center w-full text-center rounded-lg text-sky-500 dark:text-sky-500 p-2 inline-block bg-transparent font-medium text-normal p-1 hover:transition hover:ease-in-out`}
                 >
-                  Ajukan <MoveRight />
-                </Link>
+                  Apply <MoveRight />
+                </button>
               </div>
             </div>
           ))}
         </div>
+        {showIframe && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-[100]">
+            <div className="relative bg-white dark:bg-slate-700 rounded-lg w-full sm:w-3/4 h-full">
+              <button
+                onClick={() => setShowIframe(false)}
+                className="absolute top-3 right-3 text-white bg-sky-500 hover:bg-sky-700 rounded-full w-8 h-8"
+              >
+                ✕
+              </button>
+              <Iframe
+                url="https://rightholder.human-initiative.org/c0701f96-eabe-4c29-83ef-f0c0a682049d" // Ganti URL ini dengan URL iframe Anda
+                width="100%"
+                height="100%"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        )}
       </section>
     </main>
   );

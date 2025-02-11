@@ -10,6 +10,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs-fe";
+import AnimationCardPulse from "../../animation-card-pulse";
 
 interface News {
   id: number;
@@ -41,20 +42,20 @@ const News = () => {
 
   const filterNews = () => {
     if (!newss) return [];
-  
+
     // Urutkan berdasarkan ID terbesar
     const sortedNews = [...newss].sort((a, b) => b.id - a.id);
-  
+
     if (selectedTab === "all") {
       // Tampilkan 4 berita untuk kategori "all"
       return sortedNews.slice(0, 4);
     }
-  
+
     // Filter berita berdasarkan kategori yang dipilih dan ambil 4 teratas
     return sortedNews
       .filter((news) => news.category_posts === selectedTab)
       .slice(0, 4);
-  };  
+  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -109,7 +110,8 @@ const News = () => {
             data-aos-easing="linear"
             data-aos-duration="1000"
           >
-            Stay informed with latest development on human initiative campaigns to keep you engaged.
+            Stay informed with latest development on human initiative campaigns
+            to keep you engaged.
           </p>
         </div>
       </div>
@@ -140,7 +142,9 @@ const News = () => {
         >
           <div className="sm:grid sm:grid-cols-4 sm:gap-8 flex flex-col">
             {loading ? (
-              <p>Loading...</p>
+              <div className="w-full">
+                <AnimationCardPulse />
+              </div>
             ) : filterNews().length > 0 ? (
               filterNews().map((news) => (
                 <div

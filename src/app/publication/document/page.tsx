@@ -97,7 +97,7 @@ const Document = () => {
             paginate(documents).map((document) => (
               <div
                 key={document.id}
-                className="publikasi-card mb-4 border-b pb-4 w-full flex flex-row gap-x-3 justify-between bg-gray-50 transition duration-500 ease-in hover:bg-gray-100"
+                className="publikasi-card mb-4 border-b pb-4 w-full flex flex-row gap-x-3 justify-between bg-gray-50 dark:bg-slate-900 transition duration-500 ease-in hover:bg-gray-100"
               >
                 <div className="flex flex-col justify-between items-start w-3/5 px-6 py-4">
                   <h2 className="capitalize text-base font-medium text-slate-950 dark:text-white leading-6 h-[60px] overflow-hidden">

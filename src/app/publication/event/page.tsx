@@ -111,7 +111,7 @@ const Event = () => {
             paginate(events).map((eventSs) => (
               <div
                 key={eventSs.id}
-                className="publikasi-card mb-4 border-b pb-4 w-full flex flex-col bg-gray-50 transition duration-500 ease-in hover:bg-gray-100"
+                className="publikasi-card mb-4 border-b pb-4 w-full flex flex-col rounded-b-lg bg-gray-50 hover:bg-slate-100 dark:bg-slate-900 hover:dark:bg-slate-800 transition duration-500 ease-in hover:bg-gray-100"
               >
                 <span className="w-full h-[300px] overflow-hidden relative">
                   <Link href={`/publication/event/${eventSs.slug}`}>
@@ -120,11 +120,11 @@ const Event = () => {
                       alt={eventSs.title}
                       width={500}
                       height={300}
-                      className="w-full h-full object-cover float-none absolute"
+                      className="w-full h-full object-cover float-none absolute rounded-t-lg"
                     />
                   </Link>
                 </span>
-                <div className="flex flex-col gap-y-4 justify-start items-start px-0 py-4">
+                <div className="flex flex-col gap-y-4 justify-start items-start px-3 py-4">
                   <span className="dark:bg-slate-800 dark:text-slate-300 text-slate-600 bg-slate-200 py-1 px-2 rounded-2xl w-max">
                     {formatDate(eventSs.post_date_gmt)}
                   </span>

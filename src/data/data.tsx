@@ -160,8 +160,12 @@ export const menuDashboard = [
   },
   {
     label: "Pengajuan Bantuan (CPHP)",
-    url: "/dashboard/beneficeries",
+    url: "/dashboard/cphp",
     icon: <FiDownloadCloud />,
+    subMenu: [
+      { label: "CPHP List", url: "/dashboard/cphp/cphplist" },
+      { label: "History CPHP", url: "/dashboard/cphp/historycphp" },
+    ]
   },
   { label: "Relawan", url: "/dashboard/volunteer", icon: <FaPeopleGroup /> },
   { label: "Karir", url: "/dashboard/karir", icon: <RiHomeOfficeFill /> },
