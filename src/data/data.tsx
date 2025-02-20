@@ -139,27 +139,27 @@ interface menuDashboard {
 }
 export const menuDashboard = [
   { label: "Dashboard", url: "/dashboard", icon: <RxDashboard /> },
-  { label: "Akun Saya", url: "/dashboard/myaccount", icon: <FaUserAlt /> },
+  { label: "My Account", url: "/dashboard/myaccount", icon: <FaUserAlt /> },
   {
-    label: "Donasi",
+    label: "Donation",
     url: "/dashboard/donasi",
     icon: <TbReportMoney />,
     subMenu: [
-      { label: "Donasi Individu", url: "/dashboard/donasi/donasiindividu" },
-      { label: "Riwayat Donasi", url: "/dashboard/riwayatdonasi" },
+      { label: "Individual Donations", url: "/dashboard/donasi/donasiindividu" },
+      { label: "Donation History", url: "/dashboard/riwayatdonasi" },
     ],
   },
   {
-    label: "Proyek",
+    label: "Project",
     url: "/dashboard/csrservices",
     icon: <RiCustomerService2Line />,
     subMenu: [
       { label: "Sponsori Program", url: "/dashboard/csrservices/beliprogram" },
-      { label: "Ajukan Proposal", url: "/dashboard/csrservices/ajukankonsep" },
+      { label: "Submit Proposal", url: "/dashboard/csrservices/ajukankonsep" },
     ],
   },
   {
-    label: "Pengajuan Bantuan (CPHP)",
+    label: "Application for Assistance (CPHP)",
     url: "/dashboard/cphp",
     icon: <FiDownloadCloud />,
     subMenu: [
@@ -167,9 +167,9 @@ export const menuDashboard = [
       { label: "History CPHP", url: "/dashboard/cphp/historycphp" },
     ]
   },
-  { label: "Relawan", url: "/dashboard/volunteer", icon: <FaPeopleGroup /> },
-  { label: "Karir", url: "/dashboard/karir", icon: <RiHomeOfficeFill /> },
-  { label: "Perpustakaan", url: "/dashboard/library", icon: <IoLibrary /> },
+  { label: "Volunteer", url: "/dashboard/volunteer", icon: <FaPeopleGroup /> },
+  { label: "Career", url: "/dashboard/karir", icon: <RiHomeOfficeFill /> },
+  { label: "Libraries", url: "/dashboard/library", icon: <IoLibrary /> },
   {
     label: "Implementator Program",
     url: "/dashboard/implementorprogram",

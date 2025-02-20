@@ -141,11 +141,11 @@ const PostDetail: React.FC = () => {
           cartData.amount
         )
           .then((response) => {
-            setNotifMessage("Donasi berhasil!");
+            setNotifMessage("Donation Added!");
             router.push(`/checkout`);
           })
           .catch((error) => {
-            setNotifMessage("Terjadi kesalahan saat melakukan donasi.");
+            setNotifMessage("An error occurred when making a donation.");
           });
       } else {
         setNotifMessage("Cookie 'osscart' tidak ditemukan.");

@@ -4,7 +4,6 @@ import Image from 'next/image';
 import DashboardLayout from '@/components/ui/dashboard/DashboardLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs-fe';
 import { Progress } from '@/components/ui/progress';
-import { useToast } from '@/components/ui/use-toast';
 import { Home, Baby, HandHelping, School } from 'lucide-react';
 import { DonateIndividuDisaster, DonateIndividuChildren, DonateIndividuEmpowerment, DonateIndividuInfrastructure } from '@/lib/auth-donasi';
 import Swal from 'sweetalert2';
@@ -18,7 +17,6 @@ const Page: React.FC = () => {
   const [programIndividuEmpowerment, setProgramIndividuEmpowerment] = useState<any[]>([]);
   const [programIndividuInfrastruktur, setProgramIndividuInfrastruktur] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const { toast } = useToast();
   const router = useRouter();
   const [notifMessage, setNotifMessage] = useState('');
 
@@ -76,17 +74,17 @@ const Page: React.FC = () => {
         <div className="box p-6 flex flex-col gap-y-5 shadow-xl rounded-xl dark:bg-slate-900 bg-white">
           <h5 className="text-xl font-bold">Donasi Individu</h5>
           <Tabs defaultValue="disaster" className="w-full">
-            <TabsList className="w-full flex flex-wrap justify-start">
-              <TabsTrigger value="disaster" className="w-1/4">
+            <TabsList className="w-full grid grid-cols-4 justify-start">
+              <TabsTrigger value="disaster">
                 <Home className="mr-2 h-4 w-4" /> Disaster
               </TabsTrigger>
-              <TabsTrigger value="children" className="w-1/4">
+              <TabsTrigger value="children">
                 <Baby className="mr-2 h-4 w-4" /> Children
               </TabsTrigger>
-              <TabsTrigger value="empowerment" className="w-1/4">
+              <TabsTrigger value="empowerment">
                 <HandHelping className="mr-2 h-4 w-4" /> Empowerment
               </TabsTrigger>
-              <TabsTrigger value="infrastruktur" className="w-1/4">
+              <TabsTrigger value="infrastruktur">
                 <School className="mr-2 h-4 w-4" /> Infrastruktur
               </TabsTrigger>
             </TabsList>
@@ -97,7 +95,7 @@ const Page: React.FC = () => {
                 programIndividuDisaster.length > 0 ? (
                   programIndividuDisaster.map(({ product, transactionCount, totalGrossAmount }) => (
                     <div key={product.product_id} className="flex flex-col gap-y-4 w-1/4 mb-4">
-                      <Link href={`/dashboard/donasi/donasiindividu/${product.slug}`}>
+                      <Link href={`/dashboard/donasi/donasiindividu/`}>
                         <div className="w-full cursor-pointer">
                           <Image alt={product.name} src={product.product_img} width={200} height={200} className="w-full rounded-md" />
                         </div>

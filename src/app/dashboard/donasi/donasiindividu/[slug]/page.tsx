@@ -42,7 +42,9 @@ const Page: React.FC<{ params: Params }> = ({ params }) => {
             }
         };
 
-        fetchProduct();
+        if (params.slug) {
+            fetchProduct();
+        }
     }, [params.slug]);
 
     const formatPriceToIDR = (price: number): string => {

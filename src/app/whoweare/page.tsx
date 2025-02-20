@@ -269,6 +269,16 @@ const branch: Branch[] = [
     alamat: "Busan Indonesia Center 3rd Floor 1900 Geumgok-dong Buk-gu, Busan",
   },
   {
+    negara: "Japan",
+    namacabang: "Human Initiative Japan",
+    alamat: "Tokyo, Setagaya, Kitami 9-18-25, Japan",
+  },
+  {
+    negara: "Europe",
+    namacabang: "Human Initiative Europe",
+    alamat: "Human Initiative Europe e.V. | Bei den Mühren 1, 20457 Hamburg, Germany",
+  },
+  {
     negara: "Representatif",
     namacabang: "REPRESENTATIF",
     alamat:

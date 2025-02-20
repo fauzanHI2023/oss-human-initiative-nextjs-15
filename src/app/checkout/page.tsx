@@ -12,9 +12,9 @@ import { useSession } from "next-auth/react";
 import { useCart } from "@/context/CartContext";
 import { FaCartPlus, FaOpencart } from "react-icons/fa";
 import Cookies from "js-cookie";
-import PhoneInput from 'react-phone-number-input';
-import 'react-phone-number-input/style.css';
-import Image from 'next/image';
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
+import Image from "next/image";
 
 interface User {
   id: number;
@@ -53,7 +53,7 @@ const Checkout: React.FC = () => {
   const [fullName, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string | undefined>("");
-  const { cartItems, setCartItems, removeItemFromCart } = useCart();
+  const { cartItems, setCartItems, removeItemFromCart, clearCart } = useCart();
   const [notifMessage, setNotifMessage] = useState("");
   const [anonim, setAnonim] = useState<boolean>(false);
 
@@ -161,30 +161,30 @@ const Checkout: React.FC = () => {
 
   const handleDonateNow = async (event: React.FormEvent) => {
     event.preventDefault();
-  
+
     if (!userId && (!fullName || !email)) {
       setNotifMessage("Enter Your Information");
       return;
     }
-  
+
     try {
       // Pastikan ada metode pembayaran yang dipilih
       const selectedPayment = paymentChannels.find(
         (channel) => channel.id === selectedPaymentChannel
       );
-  
+
       if (!selectedPayment) {
         setNotifMessage("Pilih metode pembayaran terlebih dahulu.");
         return;
       }
-  
+
       // Tentukan endpoint berdasarkan metode pembayaran
       const isBankTransfer = selectedPayment.donation_payment_id === 1;
-  
+
       const endpoint = isBankTransfer
         ? "https://adminx.human-initiative.org/donation/create-transaction-bank-transfer"
         : "https://adminx.human-initiative.org/donation/create-transaction";
-  
+
       // Kirim data transaksi
       const response = await fetch(endpoint, {
         method: "POST",
@@ -205,9 +205,9 @@ const Checkout: React.FC = () => {
           })),
         }),
       });
-  
+
       const data = await response.json();
-  
+
       if (data.status === "success") {
         const cookiesId = Cookies.get("osscart");
 
@@ -218,12 +218,14 @@ const Checkout: React.FC = () => {
         // Navigasi berdasarkan metode pembayaran
         if (isBankTransfer) {
           const transactionId = data.transaction_id;
+          clearCart();
           router.push(`/paymentbanktransfer?transaction_id=${transactionId}`);
         } else {
           if (window.snap) {
             window.snap.pay(data.snap_token, {
               onSuccess: (result: any) => {
-                console.log("Transaction successful", result);
+                // console.log("Transaction successful", result);
+                clearCart();
                 router.push(
                   `paymentbanktransfer?transaction_id=${result.order_id}`
                 );
@@ -243,7 +245,7 @@ const Checkout: React.FC = () => {
       console.error("Error creating transaction:", error);
     }
   };
-  
+
   const handleSelectPaymentChannel = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -276,10 +278,10 @@ const Checkout: React.FC = () => {
             Order Information
           </h1>
           <Link
-            href={`/joinourmovement/donate`}
+            href={`/takeaction/donate`}
             className="flex flex-row justify-center items-center gap-x-2 py-2 px-3 rounded bg-sky-600 text-white dark:bg-sky-900 dark:text-slate-200 transition ease-in duration-300 hover:bg-sky-800 dark:hover:bg-sky-600"
           >
-            <FaCartPlus/>
+            <FaCartPlus />
             Add Donate
           </Link>
         </div>
@@ -289,9 +291,12 @@ const Checkout: React.FC = () => {
             cartItems.map((item) => (
               <div
                 key={item.campaign_id}
-                className="flex flex-wrap justify-between items-center w-full py-6"
+                className="flex flex-wrap justify-between items-center w-full border-b border-slate-200 dark:border-slate-700 py-6"
               >
-                <Link href={`/campaign/${item.slug}`} className="flex flex-wrap justify-between items-center w-full border-b border-slate-200 dark:border-slate-700 py-6">
+                <Link
+                  href={`/campaign/${item.slug}`}
+                  className="flex flex-wrap justify-between items-center w-full py-6"
+                >
                   <Image
                     src={`https://cdnx.human-initiative.org/image/${item.image}`}
                     alt={item.name || "Campaign Image"}
@@ -305,16 +310,16 @@ const Checkout: React.FC = () => {
                   <p className="flex items-start text-sky-500 h-[40px]">
                     {formatPrice(item.amount)}
                   </p>
-                  <div className="flex gap-x-4 w-full items-center justify-end">
-                    <button
-                      className="text-red-500 hover:text-red-700 flex items-center gap-x-2"
-                      onClick={() => handleDeleteItem(item.campaign_id)}
-                    >
-                      <RiDeleteBin6Line size={18} />
-                      Delete
-                    </button>
-                  </div>
                 </Link>
+                <div className="flex gap-x-4 w-full items-center justify-end">
+                  <button
+                    className="text-red-500 hover:text-red-700 flex items-center gap-x-2"
+                    onClick={() => handleDeleteItem(item.campaign_id)}
+                  >
+                    <RiDeleteBin6Line size={18} />
+                    Delete
+                  </button>
+                </div>
               </div>
             ))
           ) : (
@@ -345,7 +350,10 @@ const Checkout: React.FC = () => {
                   onChange={handleAnonimChange}
                   className="checkbox"
                 />
-                <label htmlFor="anonim-checkbox" className="text-xs text-slate-800 dark:text-white">
+                <label
+                  htmlFor="anonim-checkbox"
+                  className="text-xs text-slate-800 dark:text-white"
+                >
                   Anonim
                 </label>
               </div>

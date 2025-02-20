@@ -9,6 +9,7 @@ import PopupNotif from "../utility/PopupNotif";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 
+
 const BannerHome: React.FC = () => {
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState<string>(""); 
@@ -101,7 +102,7 @@ const BannerHome: React.FC = () => {
         // Memanggil inputCart API
         inputCart(cartData.cookies_id, cartData.campaign_id, cartData.quantity, cartData.amount)
           .then((response) => {
-            setNotifMessage("Donasi berhasil!");
+            setNotifMessage("Donation Added!");
             router.push(`/checkout`);
           })
           .catch((error) => {

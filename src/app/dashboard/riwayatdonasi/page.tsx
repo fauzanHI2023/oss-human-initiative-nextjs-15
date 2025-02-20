@@ -37,6 +37,7 @@ const RiwayatDonasi: React.FC = () => {
     phpDonorData?: any[];
   } = session?.data?.user || {};
   const phpDonorId = user?.phpDonorData?.[0]?.id;
+  const phpDonorGuid = user?.phpDonorData?.[0]?.guid;
 
   const [pendingTransactions, setPendingTransactions] = useState<Transaction[]>(
     []
@@ -132,8 +133,8 @@ const RiwayatDonasi: React.FC = () => {
                             <p className="w-3/5 font-semibold text-base text-gray-700 dark:text-white overflow-hidden h-auto">
                               {transaction.name}
                             </p>
-                            <p className="text-sm px-4 py-2 text-sm rounded-3xl text-center border border-blue-500 bg-blue-50 dark:bg-slate-800 text-blue-500">
-                              Pending
+                            <p className="text-sm px-4 py-2 text-sm rounded-3xl text-center dark:bg-slate-800 text-sky-500 font-bold">
+                              pending
                             </p>
                           </div>
                           <div className="flex flex-row justify-between items-center w-full">
@@ -177,8 +178,8 @@ const RiwayatDonasi: React.FC = () => {
                             <p className="w-3/5 font-semibold text-base text-gray-700 dark:text-white overflow-hidden h-auto">
                               {transaction.name}
                             </p>
-                            <p className="px-4 py-2 rounded-3xl text-sm text-center bg-blue-500 text-white">
-                              Success
+                            <p className="text-sm px-4 py-2 text-sm rounded-3xl text-center dark:bg-slate-800 text-sky-500 font-bold">
+                              success
                             </p>
                           </div>
                           <div className="flex flex-row justify-between items-center w-full">
@@ -222,8 +223,8 @@ const RiwayatDonasi: React.FC = () => {
                             <p className="w-3/5 font-semibold text-base text-gray-700 dark:text-white overflow-hidden">
                               {transaction.name}
                             </p>
-                            <p className="px-4 py-2 text-sm rounded-3xl text-center border border-stone-600 bg-stone-100 text-stone-600">
-                              Cancel
+                            <p className="text-sm px-4 py-2 text-sm rounded-3xl text-center dark:bg-slate-800 text-sky-500 font-bold">
+                              cancel
                             </p>
                           </div>
                           <div className="flex flex-row justify-between items-center w-full">

@@ -5,6 +5,7 @@ import React, {
   useRef,
   useCallback,
   Suspense,
+  CSSProperties,
 } from "react";
 import { MoveRight } from "lucide-react";
 import { publicDonate, joinProject } from "@/data/data";
@@ -23,9 +24,15 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs-fe";
-import { Skeleton } from "@/components/ui/skeleton";
+import HashLoader from "react-spinners/HashLoader";
 
 const ITEMS_PER_PAGE = 8;
+
+const override: CSSProperties = {
+  display: "block",
+  margin: "0 block",
+  borderColor: "red",
+};
 
 const Donate = () => {
   const { scrollYProgress } = useScroll();
@@ -33,35 +40,36 @@ const Donate = () => {
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  let [color, setColor] = useState("#209ce2");
 
   useEffect(() => {
-      const getProjects = async () => {
-        try {
-          setIsLoading(true);
-          const campaigns = await fetchCampaign();
-          setProjects(campaigns.data || []); // Pastikan campaigns adalah array
-        } catch (err) {
-          setError("Failed to load campaigns");
-        } finally {
-          setIsLoading(false);
-        }
-      };
-  
-      getProjects();
-    }, []);
+    const getProjects = async () => {
+      try {
+        setIsLoading(true);
+        const campaigns = await fetchCampaign();
+        setProjects(campaigns.data || []); // Pastikan campaigns adalah array
+      } catch (err) {
+        setError("Failed to load campaigns");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getProjects();
+  }, []);
   // Function to filter collection items by type
   const filterCollectionByType = (tipe: string) => {
     return joinProject.filter((item) => item.tipe === tipe);
   };
 
   const texts = [
-    "Donasi Anda, Ubah Dunia Sekarang",
-    "Langkah Kecil, Dampak Besar Bersama",
+    "Your Donation, Change the World Now",
+    "Small Steps, Big Impact Together",
   ];
 
   const wordFlips = [
-    "Donasi Anda, Ubah Dunia Sekarang",
-    "Langkah Kecil, Dampak Besar Bersama",
+    "Your Donation, Change the World Now",
+    "Small Steps, Big Impact Together",
   ];
 
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
@@ -80,15 +88,39 @@ const Donate = () => {
 
   const calculateProgress = (grossAmount: any): any => {
     const min = 50000;
-    const max = 14000000;
+    const max = 100000000;
     return ((grossAmount - min) / (max - min)) * 100;
+  };
+
+  const stripHtml = (html: string) => {
+    if (typeof window !== "undefined") {
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      return doc.body.textContent || "";
+    }
+    return html;
+  };
+
+  const truncateAndStripHtml = (html: string, wordLimit: number) => {
+    const plainText = stripHtml(html);
+    const words = plainText.split(" ");
+    return (
+      words.slice(0, wordLimit).join(" ") +
+      (words.length > wordLimit ? "..." : "")
+    );
   };
 
   if (isLoading) {
     return (
-      <div className="p-24 text-center">
-        <p>Loading campaigns...</p>
-      </div>
+      <main className="flex min-h-screen flex-col items-center justify-center p-24 dark:bg-slate-900 bg-gray-50">
+        <HashLoader
+          color={color}
+          loading={isLoading}
+          cssOverride={override}
+          size={50}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </main>
     );
   }
 
@@ -115,10 +147,6 @@ const Donate = () => {
 
   return (
     <main className="">
-      <motion.path
-        d="M 0, 20 a 20, 20 0 1,0 40,0 a 20, 20 0 1,0 -40,0"
-        style={{ pathLength: scrollYProgress }}
-      />
       <section className="flex flex-row w-full h-screen sm:p-24 p-6 sm:pt-34 pt-24 dark:bg-slate-900 bg-sky-50 sm:bg-cover bg-cover bg-center bg-no-repeat">
         <div className="flex sm:flex-row flex-col justify-center items-center w-full">
           <div
@@ -137,10 +165,10 @@ const Donate = () => {
               className="text-base font-light text-slate-600"
               data-aos="fade-left"
             >
-              Dengan langkah kecil, Anda bisa memberikan perubahan besar. Donasi
-              sekarang dan bantu mereka yang membutuhkan.
+              With small steps, you can make a big difference. Donate now and
+              help those in need.
             </h6>
-            <button className="bg-sky-600 dark:bg-sky-500 dark:text-white text-white py-4 px-6 w-[200px]">
+            <button className="bg-sky-600 rounded-xl hover:bg-sky-500 transition duration-200 ease-in dark:bg-sky-500 dark:text-white text-white py-4 px-6 w-[200px]">
               Lets Donate
             </button>
           </div>
@@ -306,7 +334,7 @@ const Donate = () => {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="all">
-              <div className="grid grid-cols-4 gap-8 w-full">
+              <div className="flex flex-col sm:grid sm:grid-cols-4 gap-x-8 gap-y-8 flex-wrap">
                 {projects.map((projectItem: any) => (
                   <div
                     key={projectItem.id}
@@ -316,7 +344,9 @@ const Donate = () => {
                       <div
                         className="publikasi-card flex flex-col gap-y-4 h-[200px] py-4 px-6"
                         style={{
-                          backgroundImage: `url(${projectItem.image || "/donate1.jpeg"})`,
+                          backgroundImage: `url(${
+                            projectItem.image || "/donate1.jpeg"
+                          })`,
                           backgroundSize: "cover",
                         }}
                       ></div>
@@ -332,11 +362,18 @@ const Donate = () => {
                           </h6>
                         </Link>
                         <h6 className="text-sm font-medium text-slate-600 dark:text-white h-[40px] overflow-hidden">
-                          {projectItem.campaign_description}
+                          {truncateAndStripHtml(
+                            projectItem.campaign_description,
+                            5
+                          )}
                         </h6>
-                        <Progress value={calculateProgress(projectItem.donation_collected || 0)} />
+                        <Progress
+                          value={calculateProgress(
+                            projectItem.donation_collected || 0
+                          )}
+                        />
                       </div>
-                      <p className="text-sky-700 dark:text-white text-center flex flex-row gap-x-2 py-4">
+                      <p className="text-sm text-sky-700 dark:text-white text-center flex flex-row gap-x-2 py-4">
                         <span>
                           <Heart className="text-red-500" />
                         </span>
@@ -345,15 +382,18 @@ const Donate = () => {
                       <div className="flex flex-row gap-x-8">
                         <div className="w-2/3 flex flex-col justify-between items-start">
                           <h6 className="text-sky-500 dark:text-sky-500 text-lg font-medium">
-                          {formatCurrency(projectItem.donation_collected)}
+                            {formatCurrency(projectItem.donation_collected)}
                           </h6>
                           <h6 className="text-slate-500 dark:text-slate-200 text-sm">
-                          {formatCurrency(projectItem.target_donation)}
+                            {formatCurrency(projectItem.target_donation)}
                           </h6>
                         </div>
-                        <button className="w-1/3 bg-sky-700 text-white dark:text-white py-3 px-4 rounded-xl">
+                        <Link
+                          href={`/campaign/${projectItem.slug}`}
+                          className="w-1/3 bg-sky-700 hover:bg-sky-600 transition duration-200 ease-in text-white dark:text-white py-3 px-4 rounded-xl"
+                        >
                           Donate
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   </div>

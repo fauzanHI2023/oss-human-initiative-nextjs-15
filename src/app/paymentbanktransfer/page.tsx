@@ -162,7 +162,7 @@ const PaymentBankTransfer: React.FC = () => {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24 dark:bg-slate-900 bg-gradient-to-t from-blue-50 from-1% via-gray-50 via-30% to-gray-50 to-90%">
+    <main className="flex min-h-screen flex-col items-center justify-center p-24 dark:bg-slate-900">
       <div className="h-full h-96 w-1/2 py-4 pb-0 mt-12 shadow-xl rounded-sm">
         {transactionDetails && (
           <>

@@ -139,10 +139,11 @@ const Navbar = (props: Props) => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
+    const { name, value } = e.target;
+    console.log(`Updating field: ${name} -> Value: ${value}`);
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [id]: value,
+      [name]: value,
     }));
   };
 
@@ -208,7 +209,7 @@ const Navbar = (props: Props) => {
             } w-32 h-12 bg-no-repeat bg-contain flex title-font font-medium items-center text-gray-900 mb-0`}
           ></Link>
           <button
-            className="text-xl focus:outline-none hidden"
+            className="text-xl focus:outline-none sm:hidden flex"
             onClick={() => setShowMenu(!showMenu)}
           >
             {showMenu ? <MdClose /> : <MdMenu />}
@@ -219,7 +220,7 @@ const Navbar = (props: Props) => {
                 key={item.id}
                 className="relative group text-base font-normal pb-2"
               >
-                <Link href={item.url} className="flex flex-row">
+                <Link href={item.url} className="flex flex-row dark:hover:text-slate-200 dark:text-slate-300 hover:text-slate-700 hover:font-semibold transition duration-200 ease-in text-slate-500 text-base font-semibold">
                   {item.label} <ChevronDown className="text-sm w-4" />
                 </Link>
                 {item.subMenu && <SubMenu items={item.subMenu} />}
@@ -229,9 +230,9 @@ const Navbar = (props: Props) => {
           <div className="flex flex-row gap-x-4 ">
             <div className="flex shrink-0 items-center gap-x-4">
               <DropdownMenu>
-                <DropdownMenuTrigger asChild className="z-[99999] relative">
+                <DropdownMenuTrigger asChild className="z-[99999] bg-slate-200 text-slate-700 dark:text-white hover:bg-slate-300 dark:bg-slate-700 focus:outline-none relative">
                   <Button size="icon">
-                    <Sun className="h-[1.2rem] text-slate-700 dark:text-white w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                    <Sun className="h-[1.2rem] text-slate-700 dark:text-slate-100 w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                     <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                     <span className="sr-only">Toggle theme</span>
                   </Button>
@@ -255,7 +256,7 @@ const Navbar = (props: Props) => {
               >
                 <AiOutlineShoppingCart className="text-2xl cursor-pointer" />
                 {cartCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-amber-400 dark:bg-red-500 bg-sky-600 text-white text-xs font-bold w-4 h-4 flex items-center justify-center rounded-full">
+                  <span className="absolute top-0 right-0 bg-amber-400 dark:bg-red-500 bg-red-500 text-white text-xs font-bold w-4 h-4 flex items-center justify-center rounded-full">
                     {cartCount}
                   </span>
                 )}
@@ -265,8 +266,8 @@ const Navbar = (props: Props) => {
                     style={{ top: "84px" }}
                   >
                     <div
-                      className="absolute top-0 right-0 bg-white dark:bg-slate-800 w-96 rounded shadow-lg"
-                      style={{ right: "15rem", top: "-20px" }}
+                      className="absolute top-0 right-0 bg-gray-50 dark:bg-slate-900 w-96 rounded-xl border-slate-100 shadow-2xl"
+                      style={{ right: "4rem", top: "-20px" }}
                     >
                       <div className="flex flex-row justify-between items-center border-b">
                         <h3 className="text-base font-semibold p-4">
@@ -381,7 +382,7 @@ const Navbar = (props: Props) => {
                   >
                     <input
                       type="text"
-                      id="username"
+                      name="username"
                       className="w-full autofill:bg-background focus:bg-background bg-background text-slate-800 dark:text-slate-200 border border-solid border-[#919EAB52] px-2 pb-2 pt-4 rounded-lg  placeholder:text-[#919EAB] focus:border-sky-600 focus:outline-none transition duration-300 ease-in-out"
                       placeholder="Username or Email"
                       value={formData.username}
@@ -389,7 +390,7 @@ const Navbar = (props: Props) => {
                     />
                     <div className="relative">
                       <input
-                        id="password"
+                        name="password"
                         className="w-full bg-background text-slate-800 dark:text-slate-200 border border-solid border-[#919EAB52] px-2 pb-2 pt-4 rounded-lg  placeholder:text-[#919EAB] focus:border-sky-600 focus:outline-none transition duration-300 ease-in-out"
                         placeholder="Password"
                         type={showPwlogin ? "text" : "password"}

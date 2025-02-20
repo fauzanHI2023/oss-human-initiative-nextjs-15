@@ -34,7 +34,7 @@ const FundProject = () => {
 
   const calculateProgress = (grossAmount: number): number => {
     const min = 50000;
-    const max = 14000000;
+    const max = 100000000;
     return ((grossAmount - min) / (max - min)) * 100;
   };
 
@@ -104,7 +104,7 @@ const FundProject = () => {
           See other Campaign​
         </a>
       </div>
-      <div className="flex felx-col sm:grid sm:grid-cols-4 gap-x-8 flex-wrap">
+      <div className="flex flex-col sm:grid sm:grid-cols-4 gap-x-8 flex-wrap">
         {projects.slice(0, 4).map((projectItem: any) => (
           <div
             key={projectItem.id}
@@ -119,7 +119,7 @@ const FundProject = () => {
                 }}
               ></div>
             </Link>
-            <div className="flex flex-col py-4 px-6 dark:bg-slate-900 bg-white">
+            <div className="flex flex-col py-4 hover:shadow-lg hover:rounded-xl transition duration-200 ease-in px-6 dark:bg-slate-900 bg-white">
               <div className="flex flex-col gap-y-4">
                 <span className="flex text-sky-500 dark:text-slate-200 dark:text-sky-500 dark:bg-slate-700 bg-sky-100 py-1 px-4 rounded-2xl w-max">
                   children
@@ -149,9 +149,9 @@ const FundProject = () => {
                   {formatCurrency(projectItem.target_donation)}
                   </h6>
                 </div>
-                <button className="w-1/3 bg-sky-700 text-white dark:text-white py-3 px-4 rounded-xl">
+                <Link href={`/campaign/${projectItem.slug}`} className="w-1/3 bg-sky-700 hover:bg-sky-600 transition duration-200 ease-in text-white dark:text-white py-3 px-4 rounded-xl">
                   Donate
-                </button>
+                </Link>
               </div>
             </div>
           </div>

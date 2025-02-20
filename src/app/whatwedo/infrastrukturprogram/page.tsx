@@ -7,11 +7,10 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs-program";
-import { Boxes } from "@/components/ui/background-boxes";
 import Image from "next/image";
 import { MdOutlineMosque } from "react-icons/md";
 import { FaHandsWash } from "react-icons/fa";
-import { LuSchool2 } from "react-icons/lu";
+import { LuSchool } from "react-icons/lu";
 import { GiSuspensionBridge } from "react-icons/gi";
 
 const InfrastructureProgram = () => {
@@ -24,7 +23,6 @@ const InfrastructureProgram = () => {
       />
       <section className="relative overflow-hidden flex flex-col justify-center items-center sm:gap-y-10 gap-y-10 sm:py-[150px] py-10 sm:px-24 px-6 dark:bg-slate-950 bg-white">
         <div className="absolute inset-0 w-full h-full z-20 pointer-events-none" />
-        <Boxes />
         <div className="flex flex-row justify-center items-center gap-x-10 w-full relative z-20">
           <h5 className="text-slate-700 w-full dark:text-white font-semibold text-5xl">
             Infrastruktur <span className="text-sky-600">Program</span>
@@ -75,7 +73,7 @@ const InfrastructureProgram = () => {
               value="sekolah"
               className="w-max-content flex flex-row gap-x-2"
             >
-              <LuSchool2 className="text-sky-600" /> Sekolah
+              <LuSchool className="text-sky-600" /> Sekolah
             </TabsTrigger>
             <TabsTrigger
               value="jembatan"

@@ -60,7 +60,7 @@ const CSRServices = () => {
 
   return (
     <main className="flex flex-col items-center justify-center scroll-smooth">
-      <section className="scroll-smooth flex flex-row w-full sm:h-[858px] h-screen sm:p-24 p-6 sm:pt-34 pt-24 dark:bg-hero-csr-dark bg-hero-csr-white sm:bg-cover bg-cover bg-center bg-no-repeat">
+      <section className="scroll-smooth flex flex-row w-full sm:h-[858px] h-screen sm:p-24 p-6 sm:pt-34 pt-24 bg-gradient-to-r from-sky-50 via-blue-50 to-white dark:from-sky-700 sm:bg-cover bg-cover bg-center bg-no-repeat">
         <div className="flex sm:flex-row flex-col justify-center items-center w-full">
           <div
             className="flex flex-col gap-y-8 sm:w-2/4 w-full justify-center sm:pb-0 pb-8"
@@ -305,8 +305,8 @@ const CSRServices = () => {
         </div>
       </section>
       <section
-        className={`scroll-smooth relative flex flex-col w-full sm:px-32 sm:py-20 p-6 dark:bg-slate-950 bg-sky-50`}
-        id="#section-project-browse"
+        className={`transition duration-600 ease-in scroll-smooth relative flex flex-col w-full sm:px-32 sm:py-20 p-6 dark:bg-slate-950 bg-sky-50`}
+        id="section-project-browse"
       >
         <div className="flex sm:flex-row flex-col sm:pb-20 pb-12">
           <h5
