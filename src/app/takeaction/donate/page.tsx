@@ -341,20 +341,20 @@ const Donate = () => {
                     className="h-full flex flex-col justify-between rounded-2xl mb-6"
                   >
                     <Link href={`/campaign/${projectItem.slug}`}>
-                      <div
-                        className="publikasi-card flex flex-col gap-y-4 h-[200px] py-4 px-6"
-                        style={{
-                          backgroundImage: `url(${
-                            projectItem.image || "/donate1.jpeg"
-                          })`,
-                          backgroundSize: "cover",
-                        }}
-                      ></div>
+                      <div className="publikasi-card flex flex-col gap-y-4 h-[200px]">
+                        <Image
+                          src={`https://cdnx.human-initiative.org/image/${projectItem.campaign_img}`}
+                          alt={projectItem.campaign_name}
+                          width={500}
+                          height={500}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
                     </Link>
                     <div className="flex flex-col py-4 px-6 dark:bg-slate-900 bg-white">
                       <div className="flex flex-col gap-y-4">
                         <span className="flex text-sky-500 dark:text-slate-200 dark:text-sky-500 dark:bg-slate-700 bg-sky-100 py-1 px-4 rounded-2xl w-max">
-                          children
+                          {projectItem.core_program}
                         </span>
                         <Link href={`/campaign/${projectItem.slug}`}>
                           <h6 className="text-lg font-semibold text-slate-700 dark:text-white h-[60px] overflow-hidden">
@@ -377,14 +377,14 @@ const Donate = () => {
                         <span>
                           <Heart className="text-red-500" />
                         </span>
-                        {projectItem.support} orang memberi dukungan
+                        {projectItem.support} people give support
                       </p>
                       <div className="flex flex-row gap-x-8">
                         <div className="w-2/3 flex flex-col justify-between items-start">
                           <h6 className="text-sky-500 dark:text-sky-500 text-lg font-medium">
                             {formatCurrency(projectItem.donation_collected)}
                           </h6>
-                          <h6 className="text-slate-500 dark:text-slate-200 text-sm">
+                          <h6 className="hidden text-slate-500 dark:text-slate-200 text-sm">
                             {formatCurrency(projectItem.target_donation)}
                           </h6>
                         </div>

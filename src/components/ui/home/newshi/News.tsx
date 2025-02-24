@@ -17,7 +17,7 @@ interface News {
   post_title: string;
   guid: string;
   post_content: string;
-  post_date_gmt: string;
+  post_date: string;
   category_posts: string;
   slug: string;
 }
@@ -164,7 +164,7 @@ const News = () => {
                   </span>
                   <div className="flex flex-col gap-y-4 justify-start items-start px-0 py-4">
                     <span className="dark:bg-slate-800 dark:text-slate-300 text-slate-600 bg-slate-200 py-1 px-2 rounded-2xl w-max">
-                      {formatDate(news.post_date_gmt)}
+                      {formatDate(news.post_date)}
                     </span>
                     <Link href={`/publication/news&stories/${news.slug}`}>
                       <h2 className="text-sky-800 dark:text-white sm:text-base text-base font-semibold dark:text-white leading-6 h-[50px] overflow-hidden">

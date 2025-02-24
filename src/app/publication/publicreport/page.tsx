@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, CSSProperties } from "react";
 import BannerPublikasi from "@/components/ui/banner/BannerPublikasi";
 import { fetchPublicReports } from "@/lib/publication/auth-public-report";
 import axios from "axios";
@@ -14,8 +14,15 @@ import {
 } from "@/components/ui/tabs-fe";
 import { ArrowDownToLine, SlidersHorizontal } from "lucide-react";
 import PdfViewer from "@/components/pdf/PdfViewer";
+import HashLoader from "react-spinners/HashLoader";
 import AOS from "aos";
 import "aos/dist/aos.css";
+
+const override: CSSProperties = {
+  display: "block",
+  margin: "0 auto",
+  borderColor: "red",
+};
 
 interface PublicReport {
   id: number;
@@ -37,6 +44,7 @@ const PublicReport = () => {
   const [selectedTab, setSelectedTab] = useState<string>("all");
   const [selectedYear, setSelectedYear] = useState<string>("All");
   const [showYearDropdown, setShowYearDropdown] = useState(false);
+  let [color, setColor] = useState("#209ce2");
 
   const itemsPerPage = 10; // Number of items per page
   const maxVisiblePages = 5;
@@ -145,7 +153,8 @@ const PublicReport = () => {
               onClick={() => setShowYearDropdown(!showYearDropdown)}
               className="flex flex-row justify-between px-6 py-2 rounded-3xl bg-sky-500 text-white z-20 hover:transition-all hover:duration-200 hover:bg-sky-600"
             >
-              Year <SlidersHorizontal className="pl-2 w-12 text-white text-lg" />
+              Year{" "}
+              <SlidersHorizontal className="pl-2 w-12 text-white text-lg" />
             </button>
 
             {/* Dropdown */}
@@ -196,7 +205,16 @@ const PublicReport = () => {
           >
             <div className="sm:grid sm:grid-cols-2 sm:gap-10 w-full flex flex-col gap-y-6">
               {loading ? (
-                <p>Loading...</p>
+                <main className="flex min-h-screen flex-col items-center justify-center p-24 dark:bg-slate-900 bg-gray-50">
+                  <HashLoader
+                    color={color}
+                    loading={loading}
+                    cssOverride={override}
+                    size={50}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                  />
+                </main>
               ) : filterReports().length > 0 ? (
                 paginate(filterReports()).map((report) => (
                   <div

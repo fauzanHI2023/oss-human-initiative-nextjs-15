@@ -4,8 +4,9 @@ import React, { useState, useEffect } from "react";
 import { Progress } from "@/components/ui/progress_fe";
 import { fetchCampaign } from "@/lib/donation/campaign/auth-campaign";
 import { Heart } from "lucide-react";
-import Link from "next/link"
+import Link from "next/link";
 import AnimationCardPulse from "../../animation-card-pulse";
+import Image from "next/image";
 
 const FundProject = () => {
   const [projects, setProjects] = useState([]);
@@ -19,10 +20,7 @@ const FundProject = () => {
         const campaigns = await fetchCampaign();
         setProjects(campaigns.data || []); // Pastikan campaigns adalah array
       } catch (error) {
-        console.error(
-          `Error fetching URLs for report`,
-          error
-        );
+        console.error(`Error fetching URLs for report`, error);
         setError("Failed to load campaigns");
       } finally {
         setIsLoading(false);
@@ -41,7 +39,7 @@ const FundProject = () => {
   if (isLoading) {
     return (
       <div className="grid grid-cols-4">
-        <AnimationCardPulse/>
+        <AnimationCardPulse />
       </div>
     );
   }
@@ -85,9 +83,7 @@ const FundProject = () => {
   };
 
   return (
-    <section
-      className="p-24 flex flex-col gap-y-12 w-full dark:bg-slate-950 bg-[#f6fcff]"
-    >
+    <section className="p-24 flex flex-col gap-y-12 w-full dark:bg-slate-950 bg-[#f6fcff]">
       <div className="flex flex-row justify-between items-end">
         <div className="flex flex-col gap-y-4">
           <h5 className="text-slate-700 dark:text-white font-semibold text-[36px]">
@@ -111,18 +107,20 @@ const FundProject = () => {
             className="h-full flex flex-col justify-between rounded-2xl"
           >
             <Link href={`/campaign/${projectItem.slug}`}>
-              <div
-                className="publikasi-card flex flex-col gap-y-4 h-[200px] py-4 px-6"
-                style={{
-                  backgroundImage: `url(${projectItem.image || "/donate1.jpeg"})`,
-                  backgroundSize: "cover",
-                }}
-              ></div>
+              <div className="publikasi-card flex flex-col gap-y-4 h-[200px] py-4 px-6">
+                <Image
+                  src={`https://cdnx.human-initiative.org/image/${projectItem.campaign_img}`}
+                  alt={projectItem.campaign_name}
+                  width={500}
+                  height={500}
+                  className="w-full h-full"
+                />
+              </div>
             </Link>
             <div className="flex flex-col py-4 hover:shadow-lg hover:rounded-xl transition duration-200 ease-in px-6 dark:bg-slate-900 bg-white">
               <div className="flex flex-col gap-y-4">
                 <span className="flex text-sky-500 dark:text-slate-200 dark:text-sky-500 dark:bg-slate-700 bg-sky-100 py-1 px-4 rounded-2xl w-max">
-                  children
+                  {projectItem.core_program}
                 </span>
                 <Link href={`/campaign/${projectItem.slug}`}>
                   <h6 className="text-lg font-semibold text-slate-700 dark:text-white h-[60px] overflow-hidden">
@@ -132,24 +130,29 @@ const FundProject = () => {
                 <h6 className="text-sm font-medium text-slate-600 dark:text-white h-[40px] overflow-hidden">
                   {truncateAndStripHtml(projectItem.campaign_description, 5)}
                 </h6>
-                <Progress value={calculateProgress(projectItem.donation_collected || 0)} />
+                <Progress
+                  value={calculateProgress(projectItem.donation_collected || 0)}
+                />
               </div>
               <p className="text-sky-700 dark:text-white text-center flex flex-row gap-x-2 py-4">
                 <span>
                   <Heart className="text-red-500" />
                 </span>
-                {projectItem.support} orang memberi dukungan
+                {projectItem.support} people give support
               </p>
               <div className="flex flex-row gap-x-8">
                 <div className="w-2/3 flex flex-col justify-between items-start">
                   <h6 className="text-sky-500 dark:text-sky-500 text-lg font-medium">
-                  {formatCurrency(projectItem.donation_collected)}
+                    {formatCurrency(projectItem.donation_collected)}
                   </h6>
                   <h6 className="text-slate-500 dark:text-slate-200 text-sm">
-                  {formatCurrency(projectItem.target_donation)}
+                    {formatCurrency(projectItem.target_donation)}
                   </h6>
                 </div>
-                <Link href={`/campaign/${projectItem.slug}`} className="w-1/3 bg-sky-700 hover:bg-sky-600 transition duration-200 ease-in text-white dark:text-white py-3 px-4 rounded-xl">
+                <Link
+                  href={`/campaign/${projectItem.slug}`}
+                  className="w-1/3 bg-sky-700 hover:bg-sky-600 transition duration-200 ease-in text-white dark:text-white py-3 px-4 rounded-xl"
+                >
                   Donate
                 </Link>
               </div>
