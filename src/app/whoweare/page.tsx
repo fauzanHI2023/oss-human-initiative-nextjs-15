@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FlipWords } from "@/components/ui/flip-words";
 import {
@@ -26,6 +26,8 @@ import {
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 interface Team {
   image: string;
@@ -132,7 +134,8 @@ const stories: Story[] = [
   },
   {
     year: "2001",
-    description: "Human Initiative was designated as a National Zakat Charity Institution.​",
+    description:
+      "Human Initiative was designated as a National Zakat Charity Institution.​",
   },
   {
     year: "2005",
@@ -276,7 +279,8 @@ const branch: Branch[] = [
   {
     negara: "Europe",
     namacabang: "Human Initiative Europe",
-    alamat: "Human Initiative Europe e.V. | Bei den Mühren 1, 20457 Hamburg, Germany",
+    alamat:
+      "Human Initiative Europe e.V. | Bei den Mühren 1, 20457 Hamburg, Germany",
   },
   {
     negara: "Representatif",
@@ -303,6 +307,10 @@ const WhoWeAre = () => {
   const wordFlips = ["build", "develope"];
   const [selectedBranchType, setSelectedBranchType] = useState<string>("Pusat");
 
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   const filteredBranches = branch.filter((b) => {
     if (selectedBranchType === "Pusat") return b.namacabang === "Kantor Pusat";
     if (selectedBranchType === "Cabang Indonesia")
@@ -314,7 +322,11 @@ const WhoWeAre = () => {
   return (
     <main className="flex flex-col sm:py-24 py-6 sm:pt-28 pt-24 dark:bg-slate-950 bg-white">
       <section className="flex flex-col sm:pt-16 pt-0 sm:px-24 px-6 dark:bg-slate-950 bg-white">
-        <div className="flex flex-row gap-x-12 justify-center items-end pb-20">
+        <div
+          data-aos="fade-right"
+          data-aos-duration="700"
+          className="flex flex-row gap-x-12 justify-center items-end pb-20"
+        >
           <h5 className="text-slate-800 dark:text-slate-300 text-5xl font-semibold sm:w-full w-full leading-tight">
             We{" "}
             <FlipWords
@@ -347,23 +359,39 @@ const WhoWeAre = () => {
       </section>
       <section className="relative flex sm:flex-row sm:gap-x-12 flex-col justify-center items-center sm:gap-y-16 gap-y-10 sm:py-28 py-14 sm:px-28 px-6 dark:bg-slate-950 bg-white">
         <div className="sm:w-1/2 w-full flex flex-col justify-start items-start gap-y-10 text-left">
-          <h5 className="text-slate-700 dark:text-white font-semibold sm:text-5xl text-xl">
+          <h5
+            className="text-slate-700 dark:text-white font-semibold sm:text-5xl text-xl"
+            data-aos="fade-right"
+            data-aos-duration="400"
+          >
             About of Human Initiative
           </h5>
           <div className="flex flex-col justify-center items-center gap-y-4">
-            <p className="text-slate-500 dark:text-slate-200 font-normal sm:text-base text-base">
+            <p
+              className="text-slate-500 dark:text-slate-200 font-normal sm:text-base text-base"
+              data-aos="fade-right"
+              data-aos-duration="700"
+            >
               Human Initiative is a global humanitarian organization that
               continues to strive to provide more meaningful benefits with
               multi-stakeholder support.
             </p>
-            <p className="text-slate-500 dark:text-slate-200 font-normal sm:text-base text-base">
+            <p
+              className="text-slate-500 dark:text-slate-200 font-normal sm:text-base text-base"
+              data-aos="fade-right"
+              data-aos-duration="700"
+            >
               Founded in Indonesia on December 10, 1999, the Human Initiative
               carries out the Theory of Change (TOC) strategy which focuses on
               the positive impact of program implementation on the community and
               makes the Humanitarian-Development Nexus the scope of the
               program.​
             </p>
-            <p className="text-slate-500 dark:text-slate-200 font-normal sm:text-base text-base">
+            <p
+              className="text-slate-500 dark:text-slate-200 font-normal sm:text-base text-base"
+              data-aos="fade-right"
+              data-aos-duration="700"
+            >
               This is derived in four main program pillars, namely the
               Initiative for Empowerment, Initiative for Children, Initiative
               for Disaster Risk Management, and Initiative for Infrastructure
@@ -371,7 +399,11 @@ const WhoWeAre = () => {
             </p>
           </div>
         </div>
-        <div className="sm:w-1/2 w-full dark:hidden flex flex-col w-full justify-center items-center gap-y-16">
+        <div
+          className="sm:w-1/2 w-full dark:hidden flex flex-col w-full justify-center items-center gap-y-16"
+          data-aos="fade-left"
+          data-aos-duration="700"
+        >
           <Image
             src="/Peta (Light).png"
             alt="Maps Human Initiatiative"
@@ -379,7 +411,11 @@ const WhoWeAre = () => {
             height={653}
           />
         </div>
-        <div className="sm:w-1/2 w-full hidden dark:block flex flex-col w-full justify-center items-center gap-y-16">
+        <div
+          className="sm:w-1/2 w-full hidden dark:block flex flex-col w-full justify-center items-center gap-y-16"
+          data-aos="fade-left"
+          data-aos-duration="700"
+        >
           <Image
             src="/Peta (Dark).png"
             alt="Maps Human Initiatiative"
@@ -393,15 +429,28 @@ const WhoWeAre = () => {
         <div className="bg-dot-thick-sky-600 dark:bg-dot-thick-sky-600 absolute w-[100px] h-[70px] left-0 top-0"></div>
         <div className="bg-dot-thick-sky-600 dark:bg-dot-thick-sky-600 absolute w-[100px] h-[70px] right-0 bottom-0"></div>
         <div className="flex flex-row justify-start items-center gap-x-10">
-          <h5 className="text-slate-700 dark:text-white font-semibold sm:text-6xl text-xl">
+          <h5
+            className="text-slate-700 dark:text-white font-semibold sm:text-6xl text-xl"
+            data-aos="fade-down"
+            data-aos-duration="1000"
+          >
             Our <span className="text-sky-600">Visions</span>
           </h5>
-          <p className="text-slate-600 dark:text-white font-medium sm:text-3xl text-base">
+          <p
+            className="text-slate-600 dark:text-white font-medium sm:text-3xl text-base"
+            data-aos="fade-down"
+            data-aos-duration="2000"
+          >
             Goodness for Dignity​
           </p>
         </div>
         <div className="flex flex-row gap-x-16">
-          <div className="bg-sky-300 w-1/4 h-[200px] rounded-xl">
+          <div
+            className="bg-sky-300 w-1/4 h-[200px] rounded-xl"
+            data-aos="fade-right"
+            data-aos-easing="ease-in-sine"
+            data-aos-duration="2000"
+          >
             <Image
               src="/IMG_7781.jpg"
               width={500}
@@ -410,7 +459,12 @@ const WhoWeAre = () => {
               className="w-full rounded-lg object-cover"
             />
           </div>
-          <div className="bg-sky-500 w-1/4 h-[200px] rounded-xl">
+          <div
+            className="bg-sky-500 w-1/4 h-[200px] rounded-xl"
+            data-aos="fade-right"
+            data-aos-easing="ease-in-sine"
+            data-aos-duration="2500"
+          >
             <Image
               src="/IMG_7807.jpg"
               width={500}
@@ -419,7 +473,12 @@ const WhoWeAre = () => {
               className="w-full rounded-lg object-cover"
             />
           </div>
-          <div className="bg-sky-400 w-1/4 h-[200px] rounded-xl">
+          <div
+            className="bg-sky-400 w-1/4 h-[200px] rounded-xl"
+            data-aos="fade-right"
+            data-aos-easing="ease-in-sine"
+            data-aos-duration="3000"
+          >
             <Image
               src="/IMG_7829.jpg"
               width={500}
@@ -428,7 +487,12 @@ const WhoWeAre = () => {
               className="w-full rounded-lg object-cover"
             />
           </div>
-          <div className="bg-sky-600 w-1/4 h-[200px] rounded-xl">
+          <div
+            className="bg-sky-600 w-1/4 h-[200px] rounded-xl"
+            data-aos="fade-right"
+            data-aos-easing="ease-in-sine"
+            data-aos-duration="3500"
+          >
             <Image
               src="/IMG_7844.jpg"
               width={500}
@@ -441,47 +505,75 @@ const WhoWeAre = () => {
       </section>
       <section className="flex flex-row sm:gap-x-16 gap-x-10 sm:py-24 py-10 sm:px-28 px-6 dark:bg-slate-950 bg-sky-50">
         <div className="flex flex-col justify-center items-start gap-y-10 w-1/2">
-          <h5 className="text-slate-700 dark:text-white font-semibold text-6xl">
+          <h5
+            className="text-slate-700 dark:text-white font-semibold text-6xl"
+            data-aos="fade-down"
+            data-aos-duration="300"
+          >
             Our <span className="text-sky-600">Missions</span>
           </h5>
           <div className="flex flex-col gap-y-16">
             <div className="flex flex-row gap-x-8">
-              <span className="">
+              <span className="" data-aos="fade-right" data-aos-duration="300">
                 <Building className="w-16 h-16 text-sky-400 stroke-1" />
               </span>
               <div className="flex flex-col gap-y-2">
-                <h5 className="text-slate-800 dark:text-white font-semibold text-xl">
+                <h5
+                  className="text-slate-800 dark:text-white font-semibold text-xl"
+                  data-aos="fade-up"
+                  data-aos-duration="400"
+                >
                   Organization
                 </h5>
-                <p className="text-slate-600 dark:text-white font-normal text-base">
+                <p
+                  className="text-slate-600 dark:text-white font-normal text-base"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                >
                   Strengthen organizational governance that is adaptive,
                   innovative, and has global reach.​
                 </p>
               </div>
             </div>
             <div className="flex flex-row gap-x-8">
-              <span className="">
+              <span className="" data-aos="fade-right" data-aos-duration="900">
                 <AlignVerticalDistributeCenter className="w-16 h-16 text-sky-400 stroke-1" />
               </span>
               <div className="flex flex-col gap-y-2">
-                <h5 className="text-slate-800 dark:text-white font-semibold text-xl">
+                <h5
+                  className="text-slate-800 dark:text-white font-semibold text-xl"
+                  data-aos="fade-up"
+                  data-aos-duration="1000"
+                >
                   Resource
                 </h5>
-                <p className="text-slate-600 dark:text-white font-normal text-base">
+                <p
+                  className="text-slate-600 dark:text-white font-normal text-base"
+                  data-aos="fade-up"
+                  data-aos-duration="1100"
+                >
                   Strengthening inclusive collaboration among stakeholders in
                   humanitarian crisis response and community development.​
                 </p>
               </div>
             </div>
             <div className="flex flex-row gap-x-8">
-              <span className="">
+              <span className="" data-aos="fade-right" data-aos-duration="1400">
                 <Slack className="w-16 h-16 text-sky-400 stroke-1" />
               </span>
               <div className="flex flex-col gap-y-2">
-                <h5 className="text-slate-800 dark:text-white font-semibold text-xl">
+                <h5
+                  className="text-slate-800 dark:text-white font-semibold text-xl"
+                  data-aos="fade-up"
+                  data-aos-duration="1500"
+                >
                   Impact
                 </h5>
-                <p className="text-slate-600 dark:text-white font-normal text-base">
+                <p
+                  className="text-slate-600 dark:text-white font-normal text-base"
+                  data-aos="fade-up"
+                  data-aos-duration="1600"
+                >
                   Develop programs by optimizing community resources to
                   encourage self-reliance
                 </p>
@@ -496,6 +588,8 @@ const WhoWeAre = () => {
             height={500}
             alt="misi Human Initiative"
             className="w-full rounded-lg object-cover"
+            data-aos="zoom-out-down"
+            data-aos-duration="700"
           />
         </div>
       </section>
@@ -508,34 +602,52 @@ const WhoWeAre = () => {
               width={800}
               height={800}
               className="w-full h-full rounded-2xl"
+              data-aos="zoom-out-down"
+              data-aos-duration="700"
             />
           </div>
           <div className="flex w-1/2 flex-col gap-y-10">
-            <h5 className="text-slate-700 dark:text-white font-semibold sm:text-4xl text-xl">
+            <h5
+              className="text-slate-700 dark:text-white font-semibold sm:text-4xl text-xl"
+              data-aos="fade-down"
+              data-aos-duration="700"
+            >
               Organizational <span className="text-sky-600">Culture</span>
             </h5>
             <div className="grid grid-cols-3">
-              <div className="flex flex-col gap-y-6">
+              <div
+                className="flex flex-col gap-y-6"
+                data-aos="fade-left"
+                data-aos-duration="800"
+              >
                 <span className="w-full">
-                  <DatabaseZap className="text-slate-800" />
+                  <DatabaseZap className="text-slate-800 dark:text-slate-200" />
                 </span>
-                <h5 className="text-sky-800 text-base font-normal ">
+                <h5 className="text-sky-800 dark:text-sky-600 text-base font-normal ">
                   Empowered
                 </h5>
               </div>
-              <div className="flex flex-col gap-y-6">
+              <div
+                className="flex flex-col gap-y-6"
+                data-aos="fade-left"
+                data-aos-duration="1000"
+              >
                 <span className="w-full">
-                  <HeartHandshake className="text-slate-800" />
+                  <HeartHandshake className="text-slate-800 dark:text-slate-200" />
                 </span>
-                <h5 className="text-sky-800 text-base font-normal ">
+                <h5 className="text-sky-800 dark:text-sky-600 text-base font-normal ">
                   Collaboration
                 </h5>
               </div>
-              <div className="flex flex-col gap-y-6">
+              <div
+                className="flex flex-col gap-y-6"
+                data-aos="fade-left"
+                data-aos-duration="1200"
+              >
                 <span className="w-full">
-                  <SunSnow className="text-slate-800" />
+                  <SunSnow className="text-slate-800 dark:text-slate-200" />
                 </span>
-                <h5 className="text-sky-800 text-base font-normal ">
+                <h5 className="text-sky-800 dark:text-sky-600 text-base font-normal ">
                   Trustworthy
                 </h5>
               </div>
@@ -546,10 +658,18 @@ const WhoWeAre = () => {
       <section className="relative flex flex-col sm:gap-y-16 gap-y-10 sm:py-28 py-14 sm:px-28 px-6 dark:bg-slate-950 bg-white">
         <div className="flex flex-row justify-start items-center gap-x-10">
           <div className="flex w-1/2 flex-col gap-y-8">
-            <h5 className="text-slate-700 dark:text-white font-semibold sm:text-4xl text-xl">
+            <h5
+              className="text-slate-700 dark:text-white font-semibold sm:text-4xl text-xl"
+              data-aos="fade-right"
+              data-aos-duration="700"
+            >
               Organizations <span className="text-sky-600">Positioning</span>
             </h5>
-            <p className="text-p-16">
+            <p
+              className="text-p-16 text-slate-800 dark:text-slate-200"
+              data-aos="fade-right"
+              data-aos-duration="1000"
+            >
               A global humanitarian organization initiated by Indonesian
               Muslims, which acts as a catalyst for change in building
               sustainable community resilience.​
@@ -562,16 +682,26 @@ const WhoWeAre = () => {
               width={800}
               height={800}
               className="w-full h-full rounded-2xl"
+              data-aos="zoom-out-down"
+              data-aos-duration="700"
             />
           </div>
         </div>
       </section>
       <section className="flex flex-col sm:gap-y-16 gap-y-10 sm:py-[150px] py-10 sm:px-24 px-6 dark:bg-slate-950 bg-white">
         <div className="flex flex-col justify-center items-center gap-y-10 w-full">
-          <h5 className="text-slate-700 text-center w-full dark:text-white font-semibold text-5xl">
+          <h5
+            className="text-slate-700 text-center w-full dark:text-white font-semibold text-5xl"
+            data-aos="zoom-out-down"
+            data-aos-duration="700"
+          >
             Meet Our <span className="text-sky-600">Management</span>
           </h5>
-          <p className="text-slate-600 dark:text-white font-normal text-base text-center">
+          <p
+            className="text-slate-600 dark:text-white font-normal text-base text-center"
+            data-aos="zoom-out-down"
+            data-aos-duration="900"
+          >
             We always move together to bring hope and positive change. In the
             spirit of cooperation, we believe the future of humanity can be
             better and full of opportunities to realize a more caring world.
@@ -579,7 +709,12 @@ const WhoWeAre = () => {
         </div>
         <div className="flex flex-row gap-x-16">
           {teams.map((teams, index) => (
-            <div key={index} className="w-1/4 flex flex-col gap-y-4">
+            <div
+              key={index}
+              className="w-1/4 flex flex-col gap-y-4"
+              data-aos="zoom-out-right"
+              data-aos-duration="700"
+            >
               <div className="">
                 <Image
                   src={teams.image}
@@ -589,10 +724,18 @@ const WhoWeAre = () => {
                   className="w-full h-[410px] rounded-lg object-cover"
                 />
               </div>
-              <h5 className="text-sky-600 dark:text-white text-2xl font-semibold">
+              <h5
+                className="text-sky-600 dark:text-white text-2xl font-semibold"
+                data-aos="zoom-out-right"
+                data-aos-duration="1000"
+              >
                 {teams.nama}
               </h5>
-              <p className="text-slate-500 dark:text-slate-300 text-base">
+              <p
+                className="text-slate-500 dark:text-slate-300 text-base"
+                data-aos="zoom-out-right"
+                data-aos-duration="1500"
+              >
                 {teams.jabatan}
               </p>
             </div>
@@ -601,14 +744,27 @@ const WhoWeAre = () => {
       </section>
       <section className="flex flex-col justify-center items-center sm:gap-y-16 gap-y-10 sm:py-16 py-10 sm:px-24 px-6 dark:bg-slate-950 bg-white w-full">
         <div className="flex flex-col justify-center items-center gap-y-6 w-full">
-          <h5 className="text-slate-700 text-center dark:text-white font-semibold text-5xl">
+          <h5
+            className="text-slate-700 text-center dark:text-white font-semibold text-5xl"
+            data-aos="fade-down"
+            data-aos-duration="1000"
+          >
             Our <span className="text-sky-600">Story</span>
           </h5>
-          <p className="text-slate-700 dark:text-white font-normal text-lg text-center">
-            To us, history is an inspiration to continue doing our best today and in the future.​
+          <p
+            className="text-slate-700 dark:text-white font-normal text-lg text-center"
+            data-aos="fade-down"
+            data-aos-duration="1200"
+          >
+            To us, history is an inspiration to continue doing our best today
+            and in the future.​
           </p>
         </div>
-        <div className="slider-container">
+        <div
+          className="slider-container"
+          data-aos="zoom-out-left"
+          data-aos-duration="1500"
+        >
           <Slider {...slideStories}>
             {stories.map((story, index) => (
               <div

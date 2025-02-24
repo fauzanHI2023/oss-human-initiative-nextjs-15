@@ -20,6 +20,7 @@ interface News {
   post_date: string;
   category_posts: string;
   slug: string;
+  news_integration: string;
 }
 
 const News = () => {
@@ -154,7 +155,11 @@ const News = () => {
                   <span className="w-full h-[300px] overflow-hidden relative">
                     <Link href={`/publication/news&stories/${news.slug}`}>
                       <Image
-                        src={news.guid}
+                        src={
+                          news.news_integration
+                            ? `https://cdnx.human-initiative.org/image/${news.guid}`
+                            : `${news.guid}`
+                        }
                         alt={news.post_title}
                         width={500}
                         height={300}
