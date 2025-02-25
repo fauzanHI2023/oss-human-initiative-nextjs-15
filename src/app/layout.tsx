@@ -4,7 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import AuthProvider from "@/context/SessionProvider";
 import { CartProvider } from "@/context/CartContext";
-import Navbar from "@/sections/Navbar";
+import Navbar from "@/components/ui/navbar/Navbar";
 import Footer from "@/components/ui/footer/Footer";
 import QueryProvider from "@/components/ui/utility/QueryProvider";
 

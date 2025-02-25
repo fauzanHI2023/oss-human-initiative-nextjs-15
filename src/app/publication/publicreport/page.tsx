@@ -229,18 +229,14 @@ const PublicReport = () => {
                         {report.title}
                       </h2>
                       <div className="flex sm:flex-row flex-col gap-x-4">
-                        {report.linkUrl ? (
-                          <a
-                            href={report.linkUrl}
-                            target="_blank"
-                            className="text-sky-500 hover:underline mt-2 flex flex-row justify-center items-center"
-                          >
-                            Download Report
-                            <ArrowDownToLine className="text-sky-600 hover:animate-shake" />
-                          </a>
-                        ) : (
-                          <p>No report file available.</p>
-                        )}
+                        <a
+                          href={report.linkUrl}
+                          target="_blank"
+                          className="text-sky-500 hover:underline mt-2 flex flex-row justify-center items-center"
+                        >
+                          Download Report
+                          <ArrowDownToLine className="text-sky-600 hover:animate-shake" />
+                        </a>
                         {report.linkUrl ? (
                           <PdfViewer fileUrl={report.linkUrl} />
                         ) : (
